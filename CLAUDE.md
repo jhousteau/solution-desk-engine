@@ -1,4 +1,6 @@
-# Project Instructions for Claude Code
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 **Project**: solution-desk-engine
 **Type**: python-api
@@ -180,5 +182,58 @@ This project uses hierarchical documentation with specialized AI context:
 When working in specific areas, Claude will automatically load the relevant context from subdirectory CLAUDE.md files.
 
 ---
+
+## Development Commands
+
+This project uses Poetry and make for development workflow:
+
+### Essential Commands
+- `make run` - Start FastAPI development server with auto-reload
+- `make test` - Run pytest test suite
+- `make test-cov` - Run tests with coverage reporting (minimum 80%)
+- `make format` - Format code with black and isort
+- `make lint` - Lint with flake8, ruff, and pylint
+- `make typecheck` - Type check with mypy
+- `make quality` - Run all quality checks (format + lint + typecheck + security)
+
+### Genesis Integration
+- `make genesis-commit MSG="message"` - Smart commit with quality gates
+- `make genesis-status` - Check project health
+- `make worktree-create NAME=feature FOCUS=src/` - Create AI-safe worktree
+
+### Manual Poetry Commands (if needed)
+- `poetry run uvicorn solution_desk_engine.main:app --reload` - Start server directly
+- `poetry run pytest` - Run tests directly
+- `poetry run pytest tests/test_main.py::test_function` - Run specific test
+
+## Architecture Overview
+
+### Core Components
+- **FastAPI Application** (`src/solution_desk_engine/main.py`): Main API with health checks and root endpoint
+- **Shared Core Integration**: Uses Genesis `shared-core` utilities for logging, environment variables, health checks
+- **Configuration**: Fail-fast environment loading with `get_required_env()` and `get_optional_env()`
+- **Health Monitoring**: Built-in health check endpoint at `/health` with detailed status
+
+### Key Patterns
+- **Environment Variables**: All config comes from env vars, loaded with fail-fast behavior
+- **Logging**: Structured logging using `shared_core.get_logger()`
+- **Health Checks**: Production-ready health monitoring with `HealthCheck` class
+- **Type Safety**: Full mypy type checking with strict configuration
+- **Error Handling**: Clear error messages for missing configuration
+
+### Project Structure
+```
+src/solution_desk_engine/     # Main application package
+├── main.py                   # FastAPI app with endpoints
+└── __init__.py              # Package initialization
+tests/                       # Test files using pytest
+├── test_main.py            # Main application tests
+```
+
+### Dependencies
+- **FastAPI**: Web framework with automatic OpenAPI docs
+- **Pydantic**: Data validation and settings management
+- **shared-core**: Genesis utilities (logging, env, health checks)
+- **uvicorn**: ASGI server for development and production
 
 **This project was created with Genesis - a development toolkit that enforces professional standards and security best practices.**
