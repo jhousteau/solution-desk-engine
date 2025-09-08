@@ -1,0 +1,60 @@
+[tool.poetry]
+name = "solution-desk-engine"
+version = "0.1.0"
+description = "A solution-desk-engine project created with Genesis"
+authors = ["James Housteau <144830228+james-housteau@users.noreply.github.com>"]
+readme = "README.md"
+packages = [{include = "solution_desk_engine", from = "src"}]
+
+[tool.poetry.scripts]
+solution-desk-engine = "solution_desk_engine.main:main"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+# Genesis shared utilities will be available once published to PyPI
+# shared-core = "^0.1.0"  # ConfigLoader, get_logger, retry, health checks, etc.
+click = "^8.1.7"
+pydantic = "^2.5.0"
+rich = "^13.7.0"
+python-dotenv = "^1.0.0"  # For environment variable loading
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.3"
+pytest-cov = "^4.1.0"
+black = "^23.11.0"
+isort = "^5.12.0"
+mypy = "^1.7.1"
+pre-commit = "^3.6.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 88
+target-version = ['py311']
+include = '\.pyi?$'
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+known_first_party = ["solution_desk_engine"]
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+check_untyped_defs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
+addopts = [
+    "--cov=solution_desk_engine",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+    "--cov-fail-under=80"
+]
