@@ -11,10 +11,12 @@ from datetime import datetime
 from pathlib import Path
 from typing import Dict, Optional
 
+
 def log(message: str, level: str = "INFO"):
     """Log a message with timestamp."""
     timestamp = datetime.now().strftime("%H:%M:%S")
     print(f"📚 [{timestamp}] {message}")
+
 
 def get_project_version() -> str:
     """Get current version from pyproject.toml."""
@@ -25,6 +27,7 @@ def get_project_version() -> str:
             return match.group(1) if match else "0.1.0"
     except FileNotFoundError:
         return "0.1.0"
+
 
 def should_update_docs(tool_input: Dict) -> bool:
     """Determine if this file change should trigger documentation updates."""
@@ -41,6 +44,7 @@ def should_update_docs(tool_input: Dict) -> bool:
     update_patterns = ["src/", "pyproject.toml", ".py", "main.py", "__init__.py"]
 
     return any(pattern in file_path for pattern in update_patterns)
+
 
 def detect_change_type(tool_input: Dict) -> Optional[str]:
     """Detect what type of change is being made based on file content."""
@@ -68,6 +72,7 @@ def detect_change_type(tool_input: Dict) -> Optional[str]:
 
     # Default to fix for other changes
     return "fix"
+
 
 def update_changelog(change_type: str, file_path: str, description: str):
     """Update CHANGELOG.md with the detected change."""
@@ -144,6 +149,7 @@ def update_changelog(change_type: str, file_path: str, description: str):
     except Exception as e:
         log(f"Error updating CHANGELOG.md: {e}")
 
+
 def update_version_refs(file_path: str):
     """Update version references in documentation files if needed."""
     version = get_project_version()
@@ -175,6 +181,7 @@ def update_version_refs(file_path: str):
 
         except Exception as e:
             log(f"Error updating README.md: {e}")
+
 
 def main():
     """Main hook execution."""
@@ -228,6 +235,7 @@ def main():
     except Exception as e:
         log(f"Unexpected error: {e}")
         sys.exit(1)
+
 
 if __name__ == "__main__":
     main()
