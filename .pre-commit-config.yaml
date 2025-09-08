@@ -40,7 +40,7 @@ repos:
       - id: no-todos
         name: Block TODO/FIXME/HACK items
         description: Prevents TODO, FIXME, and HACK comments from being committed
-        entry: bash -c 'for file in "$@"; do if grep -E "(TODO|FIXME|HACK|XXX)" "$file" > /dev/null 2>&1; then echo "❌ Found TODO/FIXME/HACK items in $file. Please resolve before committing."; grep -n -E "(TODO|FIXME|HACK|XXX)" "$file"; exit 1; fi; done' --
+        entry: bash -c 'for file in "$@"; do if grep -E "(TODO|FIXME|HACK|XXX)" "$file" > /dev/null 2>&1; then echo "❌ Found TODO/FIXME/HACK items in $file. Please resolve before committing."; grep -n -E "(TODO|FIXME/HACK|XXX)" "$file"; exit 1; fi; done' --
         language: system
         files: \.(py|ts|tsx|js|jsx|go|tf)$
         exclude: "test.*|.*_test\\.(py|ts|tsx|js|jsx|go)$|\\.git/|node_modules/|\\.venv/|\\.next/|dist/|build/|__pycache__/"
