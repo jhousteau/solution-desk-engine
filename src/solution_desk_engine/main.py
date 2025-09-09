@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 
 # Use Genesis shared utilities for dogfooding - same utilities Genesis uses internally
-from shared_core.env import get_required_env, get_optional_env
+from shared_core.env import get_optional_env
 from shared_core import get_logger, HealthCheck
 from shared_core.health import HealthStatus
 

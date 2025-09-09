@@ -5,7 +5,8 @@ from unittest.mock import patch
 import pytest
 from fastapi.testclient import TestClient
 
-from solution_desk_engine.main import app, get_required_env
+from solution_desk_engine.main import app
+from shared_core.env import get_optional_env, get_required_env
 
 client = TestClient(app)
 
@@ -29,8 +30,9 @@ def test_health_check() -> None:
 async def test_root_endpoint_async() -> None:
     """Test root endpoint using async client."""
     from httpx import AsyncClient
+    import httpx
 
-    async with AsyncClient(app=app, base_url="http://test") as ac:
+    async with AsyncClient(transport=httpx.ASGITransport(app=app), base_url="http://test") as ac:
         response = await ac.get("/")
 
     assert response.status_code == 200
@@ -51,7 +53,6 @@ def test_get_required_env_missing() -> None:
 
 def test_main_execution_code_paths() -> None:
     """Test the code paths in the main execution block."""
-    from solution_desk_engine.main import get_optional_env
 
     # Test the environment variable retrieval logic used in main block
     with patch.dict(os.environ, {"SERVER_HOST": "0.0.0.0", "SERVER_PORT": "9000"}):
