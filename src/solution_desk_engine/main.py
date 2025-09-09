@@ -2,10 +2,10 @@
 
 from fastapi import FastAPI
 from pydantic import BaseModel
+from shared_core import HealthCheck, get_logger
 
 # Use Genesis shared utilities for dogfooding - same utilities Genesis uses internally
 from shared_core.env import get_optional_env
-from shared_core import get_logger, HealthCheck
 from shared_core.health import HealthStatus
 
 # Initialize logger
@@ -19,28 +19,34 @@ LOG_LEVEL = get_optional_env("LOG_LEVEL", "info")
 app = FastAPI(
     title=SERVICE_NAME,
     description="A solution-desk-engine project created with Genesis",
-    version=SERVICE_VERSION
+    version=SERVICE_VERSION,
 )
 
 # Initialize health checker for monitoring
 health_checker = HealthCheck()
 
+
 class HealthResponse(BaseModel):
     """Health check response model."""
+
     status: str
     service: str
     version: str
     checks: list[dict]
 
+
 class MessageResponse(BaseModel):
     """Generic message response model."""
+
     message: str
+
 
 @app.get("/")
 async def root() -> MessageResponse:
     """Root endpoint returning welcome message."""
     logger.info(f"Root endpoint accessed for {SERVICE_NAME}")
     return MessageResponse(message=f"Welcome to {SERVICE_NAME}!")
+
 
 @app.get("/health", response_model=HealthResponse)
 async def health_check() -> HealthResponse:
@@ -53,8 +59,12 @@ async def health_check() -> HealthResponse:
         status="healthy" if overall_status == HealthStatus.HEALTHY else "unhealthy",
         service=SERVICE_NAME,
         version=SERVICE_VERSION,
-        checks=[{"name": c.name, "status": c.status.value, "message": c.message} for c in checks]
+        checks=[
+            {"name": c.name, "status": c.status.value, "message": c.message}
+            for c in checks
+        ],
     )
+
 
 if __name__ == "__main__":
     import uvicorn

@@ -7,30 +7,31 @@ readme = "README.md"
 packages = [{include = "solution_desk_engine", from = "src"}]
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.13"
 # Genesis shared utilities - proven patterns from Genesis toolkit
-shared-core = "^0.1.0"  # ConfigLoader, get_logger, retry, health checks, etc.
-fastapi = "^0.104.0"
-uvicorn = {extras = ["standard"], version = "^0.24.0"}
-pydantic = "^2.5.0"
-pydantic-settings = "^2.1.0"
-python-dotenv = "^1.0.0"  # For environment variable loading
+shared-core = {path = "../genesis/shared-python", develop = true}
+fastapi = "*"
+uvicorn = {extras = ["standard"], version = "*"}
+pydantic = "*"
+pydantic-settings = "*"
+python-dotenv = "*"
+genesis = {path = "../genesis"}
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^7.4.3"
-pytest-cov = "^4.1.0"
-pytest-asyncio = "^0.21.1"
-pytest-watch = "^4.2.0"
-httpx = "^0.25.2"
-black = "^23.11.0"
-isort = "^5.12.0"
-mypy = "^1.7.1"
-flake8 = "^6.1.0"
-bandit = "^1.7.5"
-pylint = "^3.0.3"
-ruff = "^0.1.6"
-pre-commit = "^3.6.0"
-gunicorn = "^21.2.0"
+pytest = "*"
+pytest-cov = "*"
+pytest-asyncio = "*"
+pytest-watch = "*"
+httpx = "*"
+black = "*"
+isort = "*"
+mypy = "*"
+flake8 = "*"
+bandit = "*"
+pylint = "*"
+ruff = "*"
+pre-commit = "*"
+gunicorn = "*"
 # Note: direnv is required for .envrc auto-loading but must be installed system-wide
 # Install: brew install direnv (macOS) or apt-get install direnv (Ubuntu)
 
