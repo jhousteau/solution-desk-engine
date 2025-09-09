@@ -1,19 +1,35 @@
-# PROJECT_NAME Documentation
+# Solution Desk Engine Documentation
 
-This directory contains all documentation for the PROJECT_NAME project.
+This directory contains all documentation for the Solution Desk Engine technical sales framework.
 
-## Structure
+## Documentation Structure
 
-- **api/** - API reference documentation and technical specifications
-- **guides/** - How-to guides, tutorials, and user documentation  
-- **architecture/** - System design documents and architecture decisions
+<!-- auto-generated-start -->
+```
+docs/
+├── design/                     # Technical design documents
+│   ├── migration.md           # Migration specifications and requirements
+│   └── Technical-Sales-Solutioning-MVP-PRD.md  # Product Requirements Document
+├── templates/                  # Document templates and examples
+│   ├── gcp_consumption_analysis.md    # GCP cost modeling template
+│   └── market_financial_analysis.md   # Market analysis template
+└── README.md                   # This file
+```
+<!-- auto-generated-end -->
+
+## Quick Links
+
+- [Migration Guide](design/migration.md) - Asset migration from legacy systems
+- [MVP Requirements](design/Technical-Sales-Solutioning-MVP-PRD.md) - Product specification
+- [GCP Cost Analysis Template](templates/gcp_consumption_analysis.md) - Advanced GCP pricing model
+- [Market Analysis Template](templates/market_financial_analysis.md) - Financial projections framework
 
 ## Contributing to Documentation
 
 When adding documentation:
 
 1. Place API docs in the `api/` directory
-2. Place user guides and tutorials in `guides/`  
+2. Place user guides and tutorials in `guides/`
 3. Place architecture decisions and design docs in `architecture/`
 4. Use clear, descriptive filenames
 5. Follow the existing documentation style
@@ -26,6 +42,6 @@ For projects that generate documentation:
 # Build API documentation
 make docs
 
-# Serve docs locally  
+# Serve docs locally
 make serve-docs
 ```
