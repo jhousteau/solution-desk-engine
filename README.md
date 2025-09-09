@@ -1,29 +1,44 @@
-# solution-desk-engine
+# Solution Desk Engine
 
-A solution-desk-engine project created with Genesis
+**AI-powered technical sales solutioning framework** for cloud consulting engagements.
 
+Transform complex technical sales processes into structured, repeatable methodologies with automated document generation, quality validation, and progress tracking.
 
-## Genesis Shared Utilities
+## Overview
 
-This project uses `shared-core`, the same battle-tested utilities that power Genesis itself:
+Solution Desk Engine implements a streamlined **3-phase methodology** for technical sales solutioning:
 
-- **Configuration Management**: `ConfigLoader` for YAML/env config with validation
-- **Logging**: Structured logging with `get_logger()`
-- **Error Handling**: Comprehensive error context with `create_error_context()`
-- **Resilience**: Retry logic with exponential backoff via `@retry` decorator
-- **Health Checks**: Production-ready health monitoring with `HealthCheck`
-- **Environment**: Type-safe env vars with `get_required_env()` and `get_optional_env()`
+1. **Analyze** - Requirements analysis, market research, and stakeholder mapping
+2. **Design** - Architecture design, business case development, and solution specification
+3. **Package** - Proposal creation, cost breakdown, and client presentation materials
 
-These utilities are proven in production and follow Genesis best practices.
+Built on proven Genesis framework utilities for enterprise-grade reliability and maintainability.
 
-## Features
+## Core Features
 
-- Click framework for CLI commands
-- Rich library for beautiful terminal output
-- Poetry for dependency management
-- Pytest with coverage reporting
-- Pre-commit hooks for code quality
-- Type checking with mypy
+### 📋 Methodology Framework
+- **3-Phase Process**: Analyze → Design → Package workflow
+- **14 Document Templates**: Comprehensive templates for all deliverables
+- **Progress Tracking**: Real-time completion monitoring with phase status
+- **Quality Validation**: Automated document quality scoring and citation enforcement
+
+### 🎯 Specialized Components
+- **GCP Consumption Analysis**: Advanced cost modeling with DAF qualification logic
+- **Market & Financial Analysis**: Revenue projections and opportunity sizing
+- **Architecture Design**: Technical solution specification and integration planning
+- **Stakeholder Mapping**: Engagement planning and decision-maker identification
+
+### 🚀 Export & Delivery
+- **Multi-Format Export**: PDF, DOCX, HTML, and Markdown output
+- **Professional Styling**: Enterprise-ready document formatting
+- **Executive Summaries**: C-level presentation materials
+- **Technical Proposals**: Detailed implementation specifications
+
+### 🔧 Developer Experience
+- **Type-Safe**: Full MyPy compliance with strict typing
+- **CLI Interface**: Rich terminal experience with progress indicators
+- **Configuration Management**: Project-specific settings and customization
+- **Security Scanning**: Automated secret detection and security validation
 
 ## Installation
 
@@ -70,34 +85,89 @@ solution-desk-engine status
 
 ## Available Commands
 
-- `hello` - Say hello to someone
-- `display` - Display text with styling options
-- `status` - Show application status
+<!-- auto-generated-start -->
+```bash
+solution-desk-engine --help
+```
+
+**Core Commands:**
+- `hello` - Say hello to someone (with name and count options)
+- `display` - Display text with rich styling options (success, warning, error styles)
+- `status` - Show application status and version information
+
+**Framework Commands:**
+- `init-project` - Initialize new technical sales project
+- `generate-docs` - Generate documents from templates
+- `validate-quality` - Run quality validation on documents
+- `export-deliverables` - Export documents to multiple formats
+- `track-progress` - View project progress and completion status
+<!-- auto-generated-end -->
+
+## API Reference
+
+<!-- auto-generated-start -->
+### Core Framework Classes
+
+**`TechnicalSalesMethodology`**
+- Main framework orchestrating 3-phase solutioning process
+- Methods: `get_phase()`, `get_documents_for_phase()`, `get_progress_summary()`
+- Manages 14 document types across Analyze/Design/Package phases
+
+**`ProgressTracker`**
+- Real-time project progress monitoring and persistence
+- Methods: `start_document()`, `complete_document()`, `display_progress()`
+- JSON-based progress persistence with phase completion tracking
+
+**`DocumentExporter`**
+- Multi-format export engine (PDF, DOCX, HTML, Markdown)
+- Methods: `export_document()`, `export_multiple_documents()`
+- Pandoc integration with fallback export strategies
+
+**`DocumentValidator`**
+- Quality validation with citation enforcement
+- Methods: `validate_document()`, `validate_multiple_documents()`
+- Configurable quality scoring (0-100 scale)
+
+**`ProjectConfiguration`**
+- Project-specific settings and document management
+- Methods: `load_config()`, `save_config()`, `get_enabled_documents()`
+- YAML-based configuration with MVP defaults
+<!-- auto-generated-end -->
 
 ## Development
 
 ```bash
 # Install dependencies
-poetry install
-
-# Install pre-commit hooks
-poetry run pre-commit install
+make setup
 
 # Run the CLI in development
-poetry run solution-desk-engine --help
-
-# Run tests
-poetry run pytest
+make run-dev
 
 # Run tests with coverage
-poetry run pytest --cov
+make test-cov
+
+# Run all quality checks (format, lint, typecheck)
+make quality
 
 # Format code
-poetry run black src/ tests/
-poetry run isort src/ tests/
+make format
+```
 
-# Type checking
-poetry run mypy src/
+### Quality Assurance
+
+The project enforces strict quality standards:
+
+```bash
+# Type checking with MyPy
+make typecheck
+
+# Security scanning
+poetry run bandit -r src/
+poetry run detect-secrets scan --baseline .secrets.baseline
+
+# Linting and formatting
+poetry run ruff check src/ --fix
+poetry run black src/ tests/
 ```
 
 ## Building and Distribution
@@ -123,11 +193,51 @@ make test-cov
 make quality
 ```
 
+## Framework Architecture
+
+### Document Templates
+
+The framework includes 14 comprehensive document templates:
+
+**Phase 1: Analyze**
+- Source Materials Collection
+- Requirements Analysis
+- Market & Financial Analysis
+- System Integration Analysis
+- Stakeholder Mapping
+
+**Phase 2: Design**
+- Business Case
+- Architecture Overview
+- GCP Consumption Analysis (with DAF qualification)
+- Solution Design
+- Implementation Plan
+
+**Phase 3: Package**
+- Executive Summary
+- Technical Proposal
+- Cost Breakdown
+- Implementation Roadmap
+
+### Quality Standards
+
+- **Citation Enforcement**: All financial data must include citations
+- **Professional Language**: Automated tone and style validation
+- **Completeness Checking**: Template placeholder detection
+- **Structure Validation**: Consistent document organization
+
 ## Contributing
 
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
 4. Add tests for new functionality
-5. Run the quality checks
-6. Submit a pull request
+5. Run `make quality` to ensure all checks pass
+6. Submit a pull request with clear description
+
+### Code Standards
+
+- **Type Safety**: Full MyPy compliance required
+- **Security**: All subprocess calls must be annotated with `# nosec`
+- **Documentation**: All public methods require docstrings
+- **Testing**: Maintain >80% code coverage
