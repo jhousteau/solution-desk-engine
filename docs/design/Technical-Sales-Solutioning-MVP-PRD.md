@@ -26,7 +26,7 @@ A command-line tool that transforms customer requirements into professional solu
 ## User Journey (MVP)
 
 ### Single Happy Path
-1. **Input**: `solution create penske --source requirements.pdf`
+1. **Input**: `solution create client --source requirements.pdf`
 2. **Analysis**: Tool analyzes requirements and researches context
 3. **Generation**: Creates structured proposal documents
 4. **Output**: `solution export --format pdf`
