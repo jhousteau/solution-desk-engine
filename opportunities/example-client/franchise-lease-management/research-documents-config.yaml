@@ -1,0 +1,706 @@
+# Research Documents Configuration Template
+# Copy this file to the root directory and rename to 'research-documents-config.yaml'
+# Set each document's 'create' field to true if you want it created, false to skip
+
+project_config:
+  name: "[Project Name]"
+  description: "[Project Description]"
+
+# Set to true for documents you want created, false to skip
+documents_to_create:
+  0-source:
+    README.md:
+      create: false
+      description: "Overview of source materials and document inventory"
+    source-inventory.md:
+      create: false
+      description: "Detailed catalog of all source documents"
+    document-analysis-summary.md:
+      create: false
+      description: "Key findings from source material analysis"
+    key-insights.md:
+      create: false
+      description: "Critical insights extracted from sources"
+    data-catalog.md:
+      create: false
+      description: "Inventory of data sources and structures"
+    glossary.md:
+      create: false
+      description: "Terms and definitions used in the project"
+    reference-materials.md:
+      create: false
+      description: "External references and resources"
+
+  1-research:
+    README.md:
+      create: false
+      description: "Overview of research findings and methodology"
+    # Understanding the Ask
+    ask-analysis.md:
+      create: false
+      description: "Deep analysis of what client is really asking for"
+    problem-statement-research.md:
+      create: false
+      description: "Root cause analysis of the business problem"
+    desired-outcomes-research.md:
+      create: false
+      description: "What success looks like for the client"
+    similar-initiatives-analysis.md:
+      create: false
+      description: "How others have approached this type of problem"
+    # Industry Best Practices
+    industry-best-practices.md:
+      create: false
+      description: "Proven approaches in this industry"
+    maturity-models.md:
+      create: false
+      description: "Industry maturity levels for this capability"
+    benchmarking-analysis.md:
+      create: false
+      description: "Performance metrics and standards"
+    lessons-learned-industry.md:
+      create: false
+      description: "What works and fails in this industry"
+    # Solution Landscape
+    solution-patterns.md:
+      create: false
+      description: "Common architectural patterns for this ask"
+    technology-landscape.md:
+      create: false
+      description: "Available technologies and their fit"
+    vendor-ecosystem.md:
+      create: false
+      description: "Key players and their strengths"
+    build-vs-buy-analysis.md:
+      create: false
+      description: "When to build, buy, or partner"
+    # Implementation Insights
+    implementation-patterns.md:
+      create: false
+      description: "How to successfully deliver this type of solution"
+    common-pitfalls.md:
+      create: false
+      description: "What typically goes wrong and why"
+    critical-success-factors.md:
+      create: false
+      description: "Must-haves for success"
+    effort-estimation-research.md:
+      create: false
+      description: "Typical timelines and effort levels"
+    # Strategic Context
+    business-drivers.md:
+      create: false
+      description: "Why this matters now for the client"
+    roi-patterns.md:
+      create: false
+      description: "How value is typically realized"
+    change-impact-analysis.md:
+      create: false
+      description: "Organizational impacts to expect"
+    future-proofing-analysis.md:
+      create: false
+      description: "How to build for tomorrow"
+    market-financial-analysis.md:
+      create: false
+      description: "Market size, financial data, and revenue opportunity analysis with citations"
+    competitive-landscape.md:
+      create: false
+      description: "Comprehensive competitive analysis with market positioning"
+    regulatory-environment.md:
+      create: false
+      description: "Compliance, regulatory requirements, and legal considerations"
+
+  2-requirements:
+    README.md:
+      create: false
+      description: "Overview of all requirements documentation"
+    scope-definition.md:
+      create: false
+      description: "Project boundaries and what's in/out of scope"
+    requirements-overview.md:
+      create: false
+      description: "High-level summary of all requirements"
+    functional-requirements.md:
+      create: false
+      description: "What the system must do"
+    non-functional-requirements.md:
+      create: false
+      description: "How well the system must perform"
+    technical-requirements.md:
+      create: false
+      description: "Technology constraints and requirements"
+    business-requirements.md:
+      create: false
+      description: "Business goals and objectives"
+    data-requirements.md:
+      create: false
+      description: "Data sources, quality, and governance needs"
+    interface-requirements.md:
+      create: false
+      description: "Integration and UI requirements"
+    security-requirements.md:
+      create: false
+      description: "Security controls and compliance needs"
+    performance-requirements.md:
+      create: false
+      description: "Response time, throughput, and capacity needs"
+    assumptions-log.md:
+      create: false
+      description: "Assumptions made during requirements gathering"
+    constraints.md:
+      create: false
+      description: "Limitations and boundaries"
+    dependencies.md:
+      create: false
+      description: "External dependencies and prerequisites"
+    traceability-matrix.md:
+      create: false
+      description: "Requirements traced to source and implementation"
+    requirements-validation.md:
+      create: false
+      description: "How requirements were validated"
+    requirements-prioritization.md:
+      create: false
+      description: "MoSCoW or other prioritization"
+    acceptance-criteria.md:
+      create: false
+      description: "How we'll know requirements are met"
+    system-integration-analysis.md:
+      create: false
+      description: "Comprehensive analysis of all system integration requirements and touchpoints"
+
+  3-analysis:
+    README.md:
+      create: false
+      description: "Overview of analysis activities and findings"
+    stakeholder-map.md:
+      create: false
+      description: "Identification and analysis of all stakeholders"
+    influence-interest-matrix.md:
+      create: false
+      description: "Stakeholder power/interest grid"
+    raci-matrix.md:
+      create: false
+      description: "Roles and responsibilities assignment"
+    engagement-plan.md:
+      create: false
+      description: "How to engage each stakeholder group"
+    resistance-analysis.md:
+      create: false
+      description: "Sources of resistance and mitigation"
+    current-state-analysis.md:
+      create: false
+      description: "As-is situation analysis"
+    future-state-vision.md:
+      create: false
+      description: "Target state definition"
+    gap-analysis.md:
+      create: false
+      description: "Gaps between current and future state"
+    user-personas.md:
+      create: false
+      description: "Key user types and their needs"
+    user-journey-maps.md:
+      create: false
+      description: "End-to-end user experiences"
+    process-analysis.md:
+      create: false
+      description: "Current process flows and inefficiencies"
+    risk-register.md:
+      create: false
+      description: "Identified risks and mitigation strategies"
+    opportunity-analysis.md:
+      create: false
+      description: "Opportunities for value creation"
+    success-metrics.md:
+      create: false
+      description: "How we'll measure success"
+    kpi-framework.md:
+      create: false
+      description: "Key performance indicators and targets"
+    compliance-requirements.md:
+      create: false
+      description: "Regulatory and compliance needs"
+    regulatory-analysis.md:
+      create: false
+      description: "Applicable regulations and impacts"
+    competitive-analysis.md:
+      create: false
+      description: "Competitor capabilities and gaps"
+    market-analysis.md:
+      create: false
+      description: "Market trends and opportunities"
+    swot-analysis.md:
+      create: false
+      description: "Strengths, weaknesses, opportunities, threats"
+    feasibility-study.md:
+      create: false
+      description: "Technical and business feasibility assessment"
+
+  4-business-case:
+    README.md:
+      create: false
+      description: "Overview of business justification"
+    executive-summary.md:
+      create: false
+      description: "One-page executive overview"
+    problem-statement.md:
+      create: false
+      description: "Clear articulation of business problem"
+    solution-overview.md:
+      create: false
+      description: "Proposed solution approach"
+    financial-analysis.md:
+      create: false
+      description: "Comprehensive financial modeling"
+    cost-breakdown.md:
+      create: false
+      description: "Detailed cost components"
+    benefits-realization.md:
+      create: false
+      description: "How and when benefits will be achieved"
+    roi-analysis.md:
+      create: false
+      description: "Return on investment calculation"
+    npv-analysis.md:
+      create: false
+      description: "Net present value analysis"
+    payback-analysis.md:
+      create: false
+      description: "Payback period calculation"
+    tco-analysis.md:
+      create: false
+      description: "Total cost of ownership over time"
+    sensitivity-analysis.md:
+      create: false
+      description: "Impact of variable changes"
+    risk-adjusted-returns.md:
+      create: false
+      description: "Returns accounting for risk"
+    strategic-alignment.md:
+      create: false
+      description: "Alignment with strategic objectives"
+    opportunity-cost.md:
+      create: false
+      description: "Cost of not doing the project"
+    investment-decision.md:
+      create: false
+      description: "Recommendation and decision framework"
+    funding-strategy.md:
+      create: false
+      description: "How the project will be funded"
+    value-proposition.md:
+      create: false
+      description: "Clear statement of value delivered"
+    success-criteria.md:
+      create: false
+      description: "Measurable success indicators"
+    alternatives-analysis.md:
+      create: false
+      description: "Other options considered"
+
+  5-architecture:
+    README.md:
+      create: false
+      description: "Overview of technical architecture"
+    architecture-overview.md:
+      create: false
+      description: "High-level architecture summary"
+    architecture-principles.md:
+      create: false
+      description: "Guiding design principles"
+    architecture-decisions.md:
+      create: false
+      description: "Key decisions and rationale (ADRs)"
+    mvp-architecture.md:
+      create: false
+      description: "Minimum viable product architecture"
+    north-star-architecture.md:
+      create: false
+      description: "Target end-state architecture"
+    system-context.md:
+      create: false
+      description: "System boundaries and interfaces"
+    logical-architecture.md:
+      create: false
+      description: "Logical components and relationships"
+    physical-architecture.md:
+      create: false
+      description: "Physical deployment view"
+    deployment-architecture.md:
+      create: false
+      description: "Deployment topology and configuration"
+    api-architecture.md:
+      create: false
+      description: "API design and management approach"
+    microservices-design.md:
+      create: false
+      description: "Microservices patterns and boundaries"
+    data-architecture.md:
+      create: false
+      description: "Data flows, storage, and governance"
+    security-architecture.md:
+      create: false
+      description: "Security controls and patterns"
+    integration-architecture.md:
+      create: false
+      description: "Integration patterns and middleware"
+    infrastructure-architecture.md:
+      create: false
+      description: "Infrastructure components and sizing"
+    cloud-architecture.md:
+      create: false
+      description: "Cloud services and deployment model"
+    network-architecture.md:
+      create: false
+      description: "Network topology and security zones"
+    ai-ml-architecture.md:
+      create: false
+      description: "AI/ML platform and model management"
+    monitoring-architecture.md:
+      create: false
+      description: "Observability and monitoring approach"
+    disaster-recovery.md:
+      create: false
+      description: "DR strategy and procedures"
+    scalability-plan.md:
+      create: false
+      description: "How the system will scale"
+    performance-architecture.md:
+      create: false
+      description: "Performance optimization strategies"
+    technology-stack.md:
+      create: false
+      description: "Complete technology inventory"
+    architecture-roadmap.md:
+      create: false
+      description: "Evolution path over time"
+    diagrams/:
+      system-context-diagram.md:
+        create: false
+        description: "C4 context diagram"
+      container-diagram.md:
+        create: false
+        description: "C4 container diagram"
+      component-diagram.md:
+        create: false
+        description: "C4 component diagrams"
+      deployment-diagram.md:
+        create: false
+        description: "Deployment topology"
+      data-flow-diagram.md:
+        create: false
+        description: "Data flow visualization"
+      sequence-diagrams.md:
+        create: false
+        description: "Key interaction sequences"
+      infrastructure-diagram.md:
+        create: false
+        description: "Infrastructure topology"
+
+  6-solution-design:
+    README.md:
+      create: false
+      description: "Overview of detailed solution design"
+    solution-design-overview.md:
+      create: false
+      description: "High-level design summary"
+    design-principles.md:
+      create: false
+      description: "Design guidelines and standards"
+    design-patterns.md:
+      create: false
+      description: "Patterns used throughout solution"
+    components/:
+      # Add your specific component designs here
+      example-component.md:
+        create: false
+        description: "Example component specification"
+    integrations/:
+      # Add your specific integration designs here
+      example-integration.md:
+        create: false
+        description: "Example integration specification"
+    ui-ux/:
+      ui-design-system.md:
+        create: false
+        description: "Design system and components"
+      user-flows.md:
+        create: false
+        description: "Key user flow diagrams"
+      wireframes.md:
+        create: false
+        description: "Low-fidelity wireframes"
+      style-guide.md:
+        create: false
+        description: "Visual style guidelines"
+    api-specifications/:
+      openapi-spec.yaml:
+        create: false
+        description: "OpenAPI 3.0 specification"
+      api-design-guidelines.md:
+        create: false
+        description: "API design standards"
+      api-versioning-strategy.md:
+        create: false
+        description: "Version management approach"
+      api-security-standards.md:
+        create: false
+        description: "API security requirements"
+    data-design/:
+      data-models.md:
+        create: false
+        description: "Logical data models"
+      database-schema.md:
+        create: false
+        description: "Physical database design"
+      data-dictionary.md:
+        create: false
+        description: "Data element definitions"
+      migration-strategy.md:
+        create: false
+        description: "Data migration approach"
+    security-design/:
+      security-controls.md:
+        create: false
+        description: "Security control implementation"
+      encryption-strategy.md:
+        create: false
+        description: "Encryption at rest and in transit"
+      access-control-design.md:
+        create: false
+        description: "RBAC and access management"
+
+  7-implementation-plan:
+    README.md:
+      create: false
+      description: "Overview of implementation approach"
+    implementation-overview.md:
+      create: false
+      description: "High-level implementation strategy"
+    implementation-strategy.md:
+      create: false
+      description: "Detailed approach and methodology"
+    phases/:
+      phase-0-preparation.md:
+        create: false
+        description: "Pre-project preparation activities"
+      phase-1-pov-plan.md:
+        create: false
+        description: "Proof of value implementation"
+      phase-2-mvp-plan.md:
+        create: false
+        description: "Minimum viable product delivery"
+      phase-3-pilot-plan.md:
+        create: false
+        description: "Pilot rollout plan"
+      phase-4-scale-plan.md:
+        create: false
+        description: "Full scale deployment"
+    resources/:
+      team-structure.md:
+        create: false
+        description: "Team organization and roles"
+      roles-responsibilities.md:
+        create: false
+        description: "Detailed RACI for execution"
+      skill-requirements.md:
+        create: false
+        description: "Required skills and expertise"
+      staffing-plan.md:
+        create: false
+        description: "Resource acquisition plan"
+    project-management/:
+      project-charter.md:
+        create: false
+        description: "Project authorization and scope"
+      governance-structure.md:
+        create: false
+        description: "Decision-making framework"
+      communication-plan.md:
+        create: false
+        description: "Stakeholder communication strategy"
+      status-reporting.md:
+        create: false
+        description: "Progress reporting approach"
+    risks/:
+      risk-management-plan.md:
+        create: false
+        description: "Risk management framework"
+      risk-mitigation-strategies.md:
+        create: false
+        description: "Specific mitigation approaches"
+      contingency-plans.md:
+        create: false
+        description: "Backup plans for key risks"
+    timelines/:
+      master-schedule.md:
+        create: false
+        description: "Overall project timeline"
+      milestone-plan.md:
+        create: false
+        description: "Key milestones and deliverables"
+      critical-path-analysis.md:
+        create: false
+        description: "Critical path identification"
+    testing/:
+      test-strategy.md:
+        create: false
+        description: "Overall testing approach"
+      test-plan.md:
+        create: false
+        description: "Detailed test planning"
+      uat-plan.md:
+        create: false
+        description: "User acceptance testing"
+    deployment/:
+      deployment-strategy.md:
+        create: false
+        description: "Overall deployment approach"
+      rollout-plan.md:
+        create: false
+        description: "Phased rollout strategy"
+      rollback-procedures.md:
+        create: false
+        description: "Rollback plans and triggers"
+    change-management/:
+      change-strategy.md:
+        create: false
+        description: "Organizational change approach"
+      training-materials.md:
+        create: false
+        description: "End-user training content"
+      adoption-plan.md:
+        create: false
+        description: "User adoption strategy"
+
+  8-proposal:
+    README.md:
+      create: false
+      description: "Overview of proposal package"
+    proposal-strategy.md:
+      create: false
+      description: "Win strategy and themes"
+    win-themes.md:
+      create: false
+      description: "Key differentiators and messages"
+    executive/:
+      executive-presentation.md:
+        create: false
+        description: "C-level presentation deck"
+      executive-summary.md:
+        create: false
+        description: "One-page executive brief"
+      value-proposition.md:
+        create: false
+        description: "Clear value statement"
+    technical/:
+      technical-overview.md:
+        create: false
+        description: "Technical solution summary"
+      solution-summary.md:
+        create: false
+        description: "Solution components overview"
+      architecture-summary.md:
+        create: false
+        description: "Architecture highlights"
+    commercial/:
+      pricing-proposal.md:
+        create: false
+        description: "Detailed pricing structure"
+      payment-terms.md:
+        create: false
+        description: "Payment schedule and terms"
+    proof-points/:
+      case-studies.md:
+        create: false
+        description: "Relevant success stories"
+      credentials.md:
+        create: false
+        description: "Team and company credentials"
+
+  9-contract:
+    README.md:
+      create: false
+      description: "Contract document overview"
+    master-services-agreement.md:
+      create: false
+      description: "Overarching service agreement"
+    statement-of-work.md:
+      create: false
+      description: "Specific work to be performed"
+    project-schedule.md:
+      create: false
+      description: "Contractual timeline"
+    deliverables-list.md:
+      create: false
+      description: "All deliverables and acceptance"
+    payment-schedule.md:
+      create: false
+      description: "Payment milestones and amounts"
+    terms-and-conditions.md:
+      create: false
+      description: "Standard legal terms"
+
+  10-audit:
+    README.md:
+      create: false
+      description: "Audit framework overview"
+    audit-report.md:
+      create: false
+      description: "Executive audit summary"
+    assumption-validation.md:
+      create: false
+      description: "Validating project assumptions"
+    discrepancy-log.md:
+      create: false
+      description: "Tracking gaps and issues"
+    traceability-verification.md:
+      create: false
+      description: "Requirements to implementation trace"
+    current-state-assessment.md:
+      create: false
+      description: "As-is state documentation"
+    gap-analysis.md:
+      create: false
+      description: "Current vs target gaps"
+    readiness-assessment.md:
+      create: false
+      description: "Implementation readiness"
+    risk-assessment.md:
+      create: false
+      description: "Risk identification and rating"
+    compliance-audit.md:
+      create: false
+      description: "Compliance verification"
+    quality-gates-checklist.md:
+      create: false
+      description: "Quality checkpoints"
+    lessons-learned.md:
+      create: false
+      description: "Project learnings capture"
+    recommendations.md:
+      create: false
+      description: "Improvement recommendations"
+
+# Build configuration
+build_config:
+  create_empty_directories: true
+  create_readme_files: true
+  use_templates: true
+  include_examples: true
+  generate_diagrams: false
+  output_format: "markdown"
+
+# Template preferences
+template_config:
+  include_toc: true
+  include_metadata: true
+  include_revision_history: true
+  include_approval_section: true
+  standard_sections:
+    - overview
+    - purpose
+    - scope
+    - content
+    - next_steps

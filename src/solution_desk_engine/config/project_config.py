@@ -2,11 +2,11 @@
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Optional
 
 import yaml
 
-from ..framework.methodology import DocumentType
+# from ..framework.methodology import DocumentType  # TODO: Re-enable when methodology is reimplemented
 
 
 @dataclass
@@ -40,7 +40,9 @@ class ProjectConfiguration:
         """
         self.config_path = config_path or Path("project_config.yaml")
         self.project_info: Optional[ProjectInfo] = None
-        self.document_configs: Dict[DocumentType, DocumentConfig] = {}
+        self.document_configs: Dict[
+            str, DocumentConfig
+        ] = {}  # TODO: Change back to DocumentType when reimplemented
         self.custom_settings: Dict[str, Any] = {}
 
         # Load configuration if file exists
@@ -56,82 +58,8 @@ class ProjectConfiguration:
             description="AI-powered technical sales solutioning project",
         )
 
-        # Enable core MVP documents only
-        self.document_configs = {
-            # Phase 1: Analyze - Core documents only
-            DocumentType.SOURCE_MATERIALS: DocumentConfig(
-                enabled=True,
-                description="Original client materials and requirements",
-                priority="high",
-            ),
-            DocumentType.REQUIREMENTS_ANALYSIS: DocumentConfig(
-                enabled=True,
-                description="Functional and non-functional requirements",
-                priority="high",
-            ),
-            DocumentType.MARKET_FINANCIAL_ANALYSIS: DocumentConfig(
-                enabled=True,
-                description="Market opportunity and financial projections",
-                priority="high",
-            ),
-            DocumentType.SYSTEM_INTEGRATION_ANALYSIS: DocumentConfig(
-                enabled=True,
-                description="Integration requirements and dependencies",
-                priority="normal",
-            ),
-            DocumentType.STAKEHOLDER_MAPPING: DocumentConfig(
-                enabled=True,
-                description="Key stakeholders and engagement plan",
-                priority="normal",
-            ),
-            # Phase 2: Design - Essential documents
-            DocumentType.BUSINESS_CASE: DocumentConfig(
-                enabled=True,
-                description="ROI analysis and business justification",
-                priority="high",
-            ),
-            DocumentType.ARCHITECTURE_OVERVIEW: DocumentConfig(
-                enabled=True,
-                description="High-level technical architecture",
-                priority="high",
-            ),
-            DocumentType.GCP_CONSUMPTION_ANALYSIS: DocumentConfig(
-                enabled=True,
-                description="GCP cost modeling and optimization",
-                priority="high",
-            ),
-            DocumentType.SOLUTION_DESIGN: DocumentConfig(
-                enabled=True,
-                description="Detailed component specifications",
-                priority="normal",
-            ),
-            DocumentType.IMPLEMENTATION_PLAN: DocumentConfig(
-                enabled=True,
-                description="Execution roadmap and timeline",
-                priority="normal",
-            ),
-            # Phase 3: Package - Core deliverables
-            DocumentType.EXECUTIVE_SUMMARY: DocumentConfig(
-                enabled=True,
-                description="Executive-level overview and recommendations",
-                priority="high",
-            ),
-            DocumentType.TECHNICAL_PROPOSAL: DocumentConfig(
-                enabled=True,
-                description="Comprehensive technical proposal",
-                priority="high",
-            ),
-            DocumentType.COST_BREAKDOWN: DocumentConfig(
-                enabled=True,
-                description="Detailed cost analysis and pricing",
-                priority="normal",
-            ),
-            DocumentType.IMPLEMENTATION_ROADMAP: DocumentConfig(
-                enabled=True,
-                description="Visual timeline and milestones",
-                priority="normal",
-            ),
-        }
+        # TODO: Re-enable when DocumentType enum is reimplemented
+        self.document_configs = {}
 
         self.custom_settings = {
             "export_formats": ["pdf", "docx"],
@@ -198,64 +126,56 @@ class ProjectConfiguration:
 
     def _load_document_configs(self, documents_config: Dict[str, Any]) -> None:
         """Load document configurations from config data."""
-        for doc_type_str, config_data in documents_config.items():
-            try:
-                doc_type = DocumentType(doc_type_str)
-                self.document_configs[doc_type] = DocumentConfig(
-                    enabled=config_data.get("enabled", True),
-                    description=config_data.get("description", ""),
-                    template_path=config_data.get("template_path"),
-                    priority=config_data.get("priority", "normal"),
-                )
-            except ValueError:
-                print(f"Warning: Unknown document type '{doc_type_str}' in config")
+        # TODO: Re-enable when DocumentType enum is reimplemented
+        pass
 
-    def is_document_enabled(self, doc_type: DocumentType) -> bool:
-        """Check if a document type is enabled."""
-        return self.document_configs.get(doc_type, DocumentConfig(False, "")).enabled
+    # TODO: Re-enable when DocumentType enum is reimplemented
+    # def is_document_enabled(self, doc_type: DocumentType) -> bool:
+    #     """Check if a document type is enabled."""
+    #     return self.document_configs.get(doc_type, DocumentConfig(False, "")).enabled
 
-    def get_enabled_documents(self) -> List[DocumentType]:
-        """Get list of enabled document types."""
-        return [
-            doc_type
-            for doc_type, config in self.document_configs.items()
-            if config.enabled
-        ]
+    # def get_enabled_documents(self) -> List[DocumentType]:
+    #     """Get list of enabled document types."""
+    #     return [
+    #         doc_type
+    #         for doc_type, config in self.document_configs.items()
+    #         if config.enabled
+    #     ]
 
-    def get_high_priority_documents(self) -> List[DocumentType]:
-        """Get list of high-priority documents."""
-        return [
-            doc_type
-            for doc_type, config in self.document_configs.items()
-            if config.enabled and config.priority == "high"
-        ]
+    # def get_high_priority_documents(self) -> List[DocumentType]:
+    #     """Get list of high-priority documents."""
+    #     return [
+    #         doc_type
+    #         for doc_type, config in self.document_configs.items()
+    #         if config.enabled and config.priority == "high"
+    #     ]
 
-    def get_documents_for_phase(self, phase_number: int) -> List[DocumentType]:
-        """Get enabled documents for a specific phase."""
-        from ..framework.methodology import TechnicalSalesMethodology
+    # def get_documents_for_phase(self, phase_number: int) -> List[DocumentType]:
+    #     """Get enabled documents for a specific phase."""
+    #     from ..framework.methodology import TechnicalSalesMethodology
 
-        methodology = TechnicalSalesMethodology()
-        phase_docs = methodology.get_documents_for_phase(phase_number)
+    #     methodology = TechnicalSalesMethodology()
+    #     phase_docs = methodology.get_documents_for_phase(phase_number)
 
-        return [
-            doc.doc_type for doc in phase_docs if self.is_document_enabled(doc.doc_type)
-        ]
+    #     return [
+    #         doc.doc_type for doc in phase_docs if self.is_document_enabled(doc.doc_type)
+    #     ]
 
-    def enable_document(
-        self, doc_type: DocumentType, description: str = "", priority: str = "normal"
-    ) -> None:
-        """Enable a document type."""
-        if doc_type not in self.document_configs:
-            self.document_configs[doc_type] = DocumentConfig(
-                enabled=True, description=description, priority=priority
-            )
-        else:
-            self.document_configs[doc_type].enabled = True
+    # def enable_document(
+    #     self, doc_type: DocumentType, description: str = "", priority: str = "normal"
+    # ) -> None:
+    #     """Enable a document type."""
+    #     if doc_type not in self.document_configs:
+    #         self.document_configs[doc_type] = DocumentConfig(
+    #             enabled=True, description=description, priority=priority
+    #         )
+    #     else:
+    #         self.document_configs[doc_type].enabled = True
 
-    def disable_document(self, doc_type: DocumentType) -> None:
-        """Disable a document type."""
-        if doc_type in self.document_configs:
-            self.document_configs[doc_type].enabled = False
+    # def disable_document(self, doc_type: DocumentType) -> None:
+    #     """Disable a document type."""
+    #     if doc_type in self.document_configs:
+    #         self.document_configs[doc_type].enabled = False
 
     def update_project_info(
         self,
