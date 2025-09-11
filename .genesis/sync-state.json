@@ -1,0 +1,41 @@
+{
+  "last_sync": "2025-09-11T00:07:07.963516+00:00",
+  "template_version": null,
+  "files": {
+    ".claude/hooks/validate-bash-command.sh": {
+      "template_hash": "0598f4ef8b10427b7e08244e8ba5dab42434aa404d7252036607b5012b7c9943",
+      "local_hash": "0598f4ef8b10427b7e08244e8ba5dab42434aa404d7252036607b5012b7c9943",
+      "modified": false
+    },
+    ".claude/hooks/update-docs.py": {
+      "template_hash": "c0c90b508bffd70566342a0aa5836da4da8e78bbed737404ae573d3686ed66e9",
+      "local_hash": "c0c90b508bffd70566342a0aa5836da4da8e78bbed737404ae573d3686ed66e9",
+      "modified": false
+    },
+    ".claude/hooks/block-bypass-commands.md": {
+      "template_hash": "36f89ee5e33836b23db9efef9cc4603f6ea3f3f6a6eec655bd604e14f063d2ec",
+      "local_hash": "36f89ee5e33836b23db9efef9cc4603f6ea3f3f6a6eec655bd604e14f063d2ec",
+      "modified": false
+    },
+    ".claude/commands/execute-issue.md": {
+      "template_hash": "ad6e80b4adca721e56464d1f29a17e4d99ff3c332d5548ac8a0d98c4c8e09c9b",
+      "local_hash": "ad6e80b4adca721e56464d1f29a17e4d99ff3c332d5548ac8a0d98c4c8e09c9b",
+      "modified": false
+    },
+    "scripts/setup.sh": {
+      "template_hash": "ec96086f823e5e984413d0c37dfdbe16379c47338eacd00850c1b72e90f0b49a",
+      "local_hash": "ec96086f823e5e984413d0c37dfdbe16379c47338eacd00850c1b72e90f0b49a",
+      "modified": false
+    },
+    "scripts/validate-bootstrap.sh": {
+      "template_hash": "2ba21ed2d3d3579df5799c7420509098e57182c1adbcc14eeeadb7a02c58d2f3",
+      "local_hash": "2ba21ed2d3d3579df5799c7420509098e57182c1adbcc14eeeadb7a02c58d2f3",
+      "modified": false
+    },
+    "scripts/check-file-organization.sh": {
+      "template_hash": "7f778e0cb795b52fec4509df78ebf5ada8be48fcf345668806de1603f6c5c128",
+      "local_hash": "7f778e0cb795b52fec4509df78ebf5ada8be48fcf345668806de1603f6c5c128",
+      "modified": false
+    }
+  }
+}

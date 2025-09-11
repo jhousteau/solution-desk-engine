@@ -17,39 +17,49 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `poetry run ruff check src/ tests/ --fix` - Lint and auto-fix with ruff
 
 ### Testing
-- `poetry run pytest` - Run all tests
+- `poetry run pytest` - Run all tests (153 tests, 76.35% coverage)
 - `poetry run pytest tests/specific_test.py` - Run a single test file
 - `poetry run pytest -k test_name` - Run specific test by name
+- `poetry run pytest --cov --cov-fail-under=80` - Coverage enforcement (80% minimum)
 
 ## Project Architecture
 
-This is a Python CLI application built with the Genesis framework, using:
+This is a **technical sales solutioning framework** built as a Python CLI application with Genesis integration. The framework implements a structured 3-phase methodology for cloud consulting engagements.
 
-- **CLI Framework**: Click for command-line interface (src/solution_desk_engine/cli.py)
-- **Output**: Rich library for terminal styling and formatting
-- **Package Management**: Poetry for dependency management
-- **Entry Point**: `solution-desk-engine` command via poetry.scripts
+### Core Architecture Components
 
-### Core Structure
-- `src/solution_desk_engine/` - Main application code
-  - `main.py` - Entry point that delegates to CLI
-  - `cli.py` - All CLI commands and Click configuration
-- `tests/` - Test files using pytest
-- `docs/` - Documentation files
+**Framework Core** (`src/solution_desk_engine/framework/`):
+- `methodology.py` - 3-phase methodology (Analyze → Design → Package) with 14 document types
+- `progress_tracker.py` - Real-time progress monitoring with JSON persistence
 
-### Available CLI Commands
-- `hello` - Greeting command with name and count options
-- `display` - Display styled messages with different style options
-- `status` - Show application status and version info
+**Document Management** (`src/solution_desk_engine/`):
+- `export/document_exporter.py` - Multi-format export (PDF, DOCX, HTML, Markdown) with Pandoc integration
+- `quality/validator.py` - Document validation with citation enforcement and quality scoring
+- `config/project_config.py` - YAML-based project configuration and settings
+
+**CLI Interface** (`src/solution_desk_engine/cli.py`):
+- Click-based commands with Rich terminal styling
+- Entry point: `solution-desk-engine` command via poetry.scripts
+
+### Technical Sales Methodology
+
+The framework orchestrates a **3-phase workflow**:
+1. **Phase 1 (Analyze)**: Requirements analysis, market research, stakeholder mapping (5 documents)
+2. **Phase 2 (Design)**: Architecture design, business case, GCP consumption analysis (5 documents)
+3. **Phase 3 (Package)**: Executive summaries, technical proposals, cost breakdowns (4 documents)
+
+Each phase contains specific `DocumentType` enums mapped to templates with validation rules and export capabilities.
 
 ## Code Quality Standards
 
 The project enforces strict code quality through pre-commit hooks:
+- **MyPy**: 100% strict type checking compliance (all methods require type annotations)
 - **Black** (line-length=88) for code formatting
 - **Ruff** for linting with auto-fix
-- **mypy** with strict type checking
 - **isort** for import sorting
 - **Bandit** for security scanning
+- **detect-secrets** for credential scanning with baseline file
+- **Test Coverage**: 80% minimum enforced (currently 76.35% with 153 tests)
 
 ## Development Environment
 
@@ -57,6 +67,20 @@ The project enforces strict code quality through pre-commit hooks:
 - Uses Poetry for virtual environment and dependency management
 - Pre-commit hooks automatically run quality checks
 - File organization is enforced via Genesis standards (scripts/check-file-organization.sh)
+
+## Framework-Specific Development Notes
+
+### Key Implementation Patterns
+- **Dataclass + Enums**: All framework entities use `@dataclass` with typed enum properties
+- **Progress Persistence**: JSON-based progress tracking in `.solution-desk-engine/progress.json`
+- **Multi-Format Export**: Primary export via Pandoc with fallback strategies (weasyprint for PDF, python-docx for DOCX)
+- **Validation Pipeline**: Citation enforcement for financial data, professional tone checking, structure validation
+
+### Working with the Framework
+- Document types are defined in `DocumentType` enum (14 total across 3 phases)
+- Progress tracking uses `PhaseStatus.PENDING/IN_PROGRESS/COMPLETED` state machine
+- Quality validation returns `ValidationResult` with 0-100 scoring and typed `ValidationIssue` list
+- Export operations return `ExportResult` with success/failure status and detailed error messages
 
 ## Genesis Integration
 

@@ -1,0 +1,159 @@
+{
+  "project_name": "Test Project",
+  "started_at": "2025-09-11T11:03:55.803589",
+  "current_phase": 1,
+  "overall_status": "pending",
+  "completion_percentage": 0.0,
+  "phases": {
+    "1": {
+      "name": "Analyze",
+      "status": "pending",
+      "started_at": null,
+      "completed_at": null,
+      "documents": {
+        "source_materials": {
+          "status": "pending",
+          "created_at": null,
+          "completed_at": null,
+          "word_count": 0,
+          "quality_score": 0.0,
+          "last_updated": null,
+          "notes": ""
+        },
+        "requirements_analysis": {
+          "status": "pending",
+          "created_at": null,
+          "completed_at": null,
+          "word_count": 0,
+          "quality_score": 0.0,
+          "last_updated": null,
+          "notes": ""
+        },
+        "market_financial_analysis": {
+          "status": "pending",
+          "created_at": null,
+          "completed_at": null,
+          "word_count": 0,
+          "quality_score": 0.0,
+          "last_updated": null,
+          "notes": ""
+        },
+        "system_integration_analysis": {
+          "status": "pending",
+          "created_at": null,
+          "completed_at": null,
+          "word_count": 0,
+          "quality_score": 0.0,
+          "last_updated": null,
+          "notes": ""
+        },
+        "stakeholder_mapping": {
+          "status": "pending",
+          "created_at": null,
+          "completed_at": null,
+          "word_count": 0,
+          "quality_score": 0.0,
+          "last_updated": null,
+          "notes": ""
+        }
+      }
+    },
+    "2": {
+      "name": "Design",
+      "status": "pending",
+      "started_at": null,
+      "completed_at": null,
+      "documents": {
+        "business_case": {
+          "status": "pending",
+          "created_at": null,
+          "completed_at": null,
+          "word_count": 0,
+          "quality_score": 0.0,
+          "last_updated": null,
+          "notes": ""
+        },
+        "architecture_overview": {
+          "status": "pending",
+          "created_at": null,
+          "completed_at": null,
+          "word_count": 0,
+          "quality_score": 0.0,
+          "last_updated": null,
+          "notes": ""
+        },
+        "gcp_consumption_analysis": {
+          "status": "pending",
+          "created_at": null,
+          "completed_at": null,
+          "word_count": 0,
+          "quality_score": 0.0,
+          "last_updated": null,
+          "notes": ""
+        },
+        "solution_design": {
+          "status": "pending",
+          "created_at": null,
+          "completed_at": null,
+          "word_count": 0,
+          "quality_score": 0.0,
+          "last_updated": null,
+          "notes": ""
+        },
+        "implementation_plan": {
+          "status": "pending",
+          "created_at": null,
+          "completed_at": null,
+          "word_count": 0,
+          "quality_score": 0.0,
+          "last_updated": null,
+          "notes": ""
+        }
+      }
+    },
+    "3": {
+      "name": "Package",
+      "status": "pending",
+      "started_at": null,
+      "completed_at": null,
+      "documents": {
+        "executive_summary": {
+          "status": "pending",
+          "created_at": null,
+          "completed_at": null,
+          "word_count": 0,
+          "quality_score": 0.0,
+          "last_updated": null,
+          "notes": ""
+        },
+        "technical_proposal": {
+          "status": "pending",
+          "created_at": null,
+          "completed_at": null,
+          "word_count": 0,
+          "quality_score": 0.0,
+          "last_updated": null,
+          "notes": ""
+        },
+        "cost_breakdown": {
+          "status": "pending",
+          "created_at": null,
+          "completed_at": null,
+          "word_count": 0,
+          "quality_score": 0.0,
+          "last_updated": null,
+          "notes": ""
+        },
+        "implementation_roadmap": {
+          "status": "pending",
+          "created_at": null,
+          "completed_at": null,
+          "word_count": 0,
+          "quality_score": 0.0,
+          "last_updated": null,
+          "notes": ""
+        }
+      }
+    }
+  }
+}
