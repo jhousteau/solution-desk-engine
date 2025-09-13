@@ -90,48 +90,44 @@ solution-desk-engine status
 solution-desk-engine --help
 ```
 
-**Core Commands:**
-- `hello` - Say hello to someone (with name and count options)
-- `display` - Display text with rich styling options (success, warning, error styles)
-- `status` - Show application status and version information
+**Available Commands:**
+- `status` - Show framework status and version information
 
-**Framework Commands:**
-- `init-project` - Initialize new technical sales project
-- `generate-docs` - Generate documents from templates
-- `validate-quality` - Run quality validation on documents
-- `export-deliverables` - Export documents to multiple formats
-- `track-progress` - View project progress and completion status
+**Technical Sales Framework:**
+- 11-Phase methodology for cloud consulting engagements
+- Comprehensive agent orchestration system with 26 specialized agents
+- Dynamic team formation for optimal task execution
+- Document generation and quality validation systems
 <!-- auto-generated-end -->
 
 ## API Reference
 
 <!-- auto-generated-start -->
-### Core Framework Classes
+### Core Framework Components
 
-**`TechnicalSalesMethodology`**
-- Main framework orchestrating 3-phase solutioning process
-- Methods: `get_phase()`, `get_documents_for_phase()`, `get_progress_summary()`
-- Manages 14 document types across Analyze/Design/Package phases
+**Technical Sales Framework**
+- 11-phase methodology for cloud consulting engagements
+- Comprehensive document templates and validation systems
+- Progress tracking and quality assurance automation
+- Multi-format export capabilities (PDF, DOCX, HTML, Markdown)
 
-**`ProgressTracker`**
-- Real-time project progress monitoring and persistence
-- Methods: `start_document()`, `complete_document()`, `display_progress()`
-- JSON-based progress persistence with phase completion tracking
+**Agent Orchestration System**
+- 26 specialized agents covering all phases of technical sales
+- Dynamic team formation with 5-6 agent teams for optimal task execution
+- Context-efficient orchestration preventing decision paralysis
+- Professional system prompts with domain expertise
 
-**`DocumentExporter`**
-- Multi-format export engine (PDF, DOCX, HTML, Markdown)
-- Methods: `export_document()`, `export_multiple_documents()`
-- Pandoc integration with fallback export strategies
+**Document Management**
+- `DocumentExporter`: Multi-format export with Pandoc integration
+- `DocumentValidator`: Quality validation with citation enforcement
+- `ProjectConfiguration`: YAML-based project settings and configuration
+- Template system supporting comprehensive technical sales methodology
 
-**`DocumentValidator`**
-- Quality validation with citation enforcement
-- Methods: `validate_document()`, `validate_multiple_documents()`
-- Configurable quality scoring (0-100 scale)
-
-**`ProjectConfiguration`**
-- Project-specific settings and document management
-- Methods: `load_config()`, `save_config()`, `get_enabled_documents()`
-- YAML-based configuration with MVP defaults
+**Development Tools**
+- Poetry-based dependency management
+- Comprehensive testing suite with coverage enforcement
+- Pre-commit hooks with quality gates (Black, Ruff, MyPy, Bandit)
+- Docker containerization for consistent deployment
 <!-- auto-generated-end -->
 
 ## Development
@@ -182,7 +178,7 @@ poetry publish
 
 ## Testing
 
-The project maintains **93.86% test coverage** with 138 comprehensive tests across 12 test modules:
+The project maintains comprehensive test coverage with quality enforcement:
 
 ```bash
 # Run all tests
