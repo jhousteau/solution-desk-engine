@@ -17,20 +17,20 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `poetry run ruff check src/ tests/ --fix` - Lint and auto-fix with ruff
 
 ### Testing
-- `poetry run pytest` - Run all tests (153 tests, 76.35% coverage)
+- `poetry run pytest` - Run all tests
 - `poetry run pytest tests/specific_test.py` - Run a single test file
 - `poetry run pytest -k test_name` - Run specific test by name
-- `poetry run pytest --cov --cov-fail-under=80` - Coverage enforcement (80% minimum)
+- `poetry run pytest --cov --cov-fail-under=75` - Coverage enforcement (75% minimum per pyproject.toml)
 
 ## Project Architecture
 
-This is a **technical sales solutioning framework** built as a Python CLI application with Genesis integration. The framework implements a structured 3-phase methodology for cloud consulting engagements.
+This is a **technical sales solutioning framework** built as a Python CLI application with Genesis integration. The framework implements a comprehensive 11-phase methodology for cloud consulting engagements.
 
 ### Core Architecture Components
 
 **Framework Core** (`src/solution_desk_engine/framework/`):
-- `methodology.py` - 3-phase methodology (Analyze → Design → Package) with 14 document types
-- `progress_tracker.py` - Real-time progress monitoring with JSON persistence
+- Framework infrastructure ready for 11-phase methodology implementation
+- Progress tracking and document management architecture in place
 
 **Document Management** (`src/solution_desk_engine/`):
 - `export/document_exporter.py` - Multi-format export (PDF, DOCX, HTML, Markdown) with Pandoc integration
@@ -43,12 +43,20 @@ This is a **technical sales solutioning framework** built as a Python CLI applic
 
 ### Technical Sales Methodology
 
-The framework orchestrates a **3-phase workflow**:
-1. **Phase 1 (Analyze)**: Requirements analysis, market research, stakeholder mapping (5 documents)
-2. **Phase 2 (Design)**: Architecture design, business case, GCP consumption analysis (5 documents)
-3. **Phase 3 (Package)**: Executive summaries, technical proposals, cost breakdowns (4 documents)
+The framework is designed around an **11-phase comprehensive methodology** for technical sales solutioning:
+- **Foundation Phase**: Initial project setup and requirements gathering
+- **Analysis Phase**: Deep dive into technical and business requirements
+- **Design Phase**: Solution architecture and technical design
+- **Validation Phase**: Proof of concept and technical validation
+- **Costing Phase**: Financial modeling and pricing analysis
+- **Proposal Phase**: Comprehensive proposal development
+- **Presentation Phase**: Executive and technical presentations
+- **Negotiation Phase**: Contract and commercial discussions
+- **Implementation Phase**: Solution deployment planning
+- **Delivery Phase**: Project execution and delivery
+- **Closure Phase**: Project wrap-up and lessons learned
 
-Each phase contains specific `DocumentType` enums mapped to templates with validation rules and export capabilities.
+The methodology is currently in development with document templates and validation rules being implemented.
 
 ## Code Quality Standards
 
@@ -59,7 +67,7 @@ The project enforces strict code quality through pre-commit hooks:
 - **isort** for import sorting
 - **Bandit** for security scanning
 - **detect-secrets** for credential scanning with baseline file
-- **Test Coverage**: 80% minimum enforced (currently 76.35% with 153 tests)
+- **Test Coverage**: 75% minimum enforced (configured in pyproject.toml)
 
 ## Development Environment
 
@@ -77,10 +85,65 @@ The project enforces strict code quality through pre-commit hooks:
 - **Validation Pipeline**: Citation enforcement for financial data, professional tone checking, structure validation
 
 ### Working with the Framework
-- Document types are defined in `DocumentType` enum (14 total across 3 phases)
-- Progress tracking uses `PhaseStatus.PENDING/IN_PROGRESS/COMPLETED` state machine
-- Quality validation returns `ValidationResult` with 0-100 scoring and typed `ValidationIssue` list
-- Export operations return `ExportResult` with success/failure status and detailed error messages
+- Framework implements comprehensive 11-phase methodology for technical sales
+- Configuration system supports YAML-based project settings via `ProjectConfiguration`
+- Quality validation and export infrastructure ready for full implementation
+- Agent orchestration system with 26 specialized agents for dynamic team formation
+
+## Containerization
+
+The project includes Docker containerization for consistent development and deployment:
+
+### Docker Commands
+- `docker build -t solution-desk-engine .` - Build Docker image
+- `docker-compose up` - Start containerized environment
+- `docker-compose down` - Stop and remove containers
+
+### Container Architecture
+- Multi-stage Dockerfile with Python 3.11 Alpine base
+- Poetry-based dependency management in containers
+- Development and production configurations via docker-compose
+- Volume mounts for local development workflow
+
+## Agent Orchestration System
+
+This project implements a sophisticated **Dynamic Team Formation** pattern for agent management:
+
+### Core Architecture
+- **26 Specialized Agents**: Complete library of domain experts across all 11 phases
+- **Dynamic Selection**: Orchestrator forms optimal 5-6 agent teams for specific tasks
+- **Context Efficiency**: Small active teams preserve context window and prevent decision paralysis
+- **Agent Library**: Located in `/docs/guides/agents/` with professional system prompts
+
+### Key Agent Categories
+- **Core Agents**: business-analyst, project-manager (always available)
+- **Discovery Specialists**: solution-architect-gcp, vertex-ai-specialist, domain-expert
+- **Business Case Team**: financial-analyst, gcp-pricing-specialist
+- **Architecture Team**: vertex-ai-architect, security-architect, data-architect
+- **Implementation Team**: devops-engineer-gcp, ml-engineer, qa-lead
+- **Commercial Team**: proposal-writer, legal-counsel, commercial-manager
+
+### Architecture Reference
+See `/docs/guides/agent-orchestration-architecture.md` for comprehensive documentation on:
+- Team formation algorithms and selection criteria
+- Context management and handoff protocols
+- Agent design principles and best practices
+- Phase-based and task-specific team compositions
+
+## Opportunity Management
+
+### Project Structure
+Projects follow the pattern: `/opportunities/{client}/{project-name}/`
+
+Example: `/opportunities/penske/franchise-lease-management/`
+- `0-source/` - Source materials and document inventory
+- `research-documents-config.yaml` - YAML configuration for document generation
+- `research-documents-status.yaml` - Progress tracking for document creation
+
+### Working with Opportunities
+- Use YAML configuration files to define which documents to create per phase
+- Progress tracking automatically maintains status across all 11 phases
+- Document templates support comprehensive technical sales methodology
 
 ## Genesis Integration
 
@@ -88,3 +151,9 @@ This project uses Genesis CLI features:
 - `make genesis-commit` - Smart commit with quality gates
 - `make worktree-create NAME=feature-name` - Create AI-safe worktrees
 - Genesis file organization checking is enforced via hooks
+
+# important-instruction-reminders
+Do what has been asked; nothing more, nothing less.
+NEVER create files unless they're absolutely necessary for achieving your goal.
+ALWAYS prefer editing an existing file to creating a new one.
+NEVER proactively create documentation files (*.md) or README files. Only create documentation files if explicitly requested by the User.

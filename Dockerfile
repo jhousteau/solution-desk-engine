@@ -92,25 +92,6 @@ RUN su developer -c 'git config --global user.name "Developer"' && \
     su developer -c 'git config --global user.email "developer@solution-desk-engine.local"' && \
     su developer -c 'git config --global init.defaultBranch main'
 
-# --- Workspace cd-guard (toggle via JAIL_MODE=cd-guard) ---
-RUN install -m 0644 /dev/stdin /etc/profile.d/workspace_jail.sh <<'EOS'
-# Enforce staying under /workspace (interactive shells)
-cd() {
-  local dest="${1:-$HOME}"
-  if [[ "$dest" == /* && "$dest" != /workspace* ]]; then
-    echo "Access denied: outside /workspace" >&2
-    return 1
-  fi
-  builtin cd "$@"
-}
-readonly -f cd
-# Bounce back if some tool teleports us out
-export PROMPT_COMMAND='[[ "$PWD" != /workspace* ]] && builtin cd /workspace || true'
-EOS
-# Apply to non-interactive shells (bash -c)
-RUN install -m 0644 /dev/stdin /etc/bash_workspace_jail <<'EOS'
-source /etc/profile.d/workspace_jail.sh
-EOS
 
 # Setup script (mounted path safe)
 COPY scripts/container-setup.sh /usr/local/bin/container-setup.sh
@@ -151,10 +132,6 @@ ulimit -c 0 || true
 ulimit -n 4096 || true
 ulimit -u 1024 || true
 
-# Enable cd-guard for both interactive and non-interactive shells
-if [[ "${JAIL_MODE:-}" == "cd-guard" ]]; then
-  export BASH_ENV=/etc/bash_workspace_jail
-fi
 
 exec "$@"
 EOF

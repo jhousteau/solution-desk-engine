@@ -1,5 +1,5 @@
 {
-  "last_sync": "2025-09-12T13:30:36.751411+00:00",
+  "last_sync": "2025-09-13T02:56:00.327464+00:00",
   "template_version": "v0.12.0",
   "files": {
     ".claude/hooks/validate-bash-command.sh": {
@@ -103,13 +103,13 @@
       "modified": false
     },
     "Dockerfile": {
-      "template_hash": "2b09337c3ded03c25f3614f3183555c1f49df1b2bd8c8aab53bd6875c1e10c51",
-      "local_hash": "35c9260d135c4b449193a10c6bc2b5cb3d438291a38ad31c29a580ad726a55cf",
+      "template_hash": "36d04f150674df9f0dd0cb362783a53a2ab26525e3a137d5461f45a5adbbf983",
+      "local_hash": "5987efb27dda09da1c31a12b575b618c72c6fd631156c052c02606d592e15ec0",
       "modified": false
     },
     "docker-compose.yml": {
-      "template_hash": "141ab3ef1dc0ffd5e88fcf657a1303dd98937efe04e95a0fe4d480011494499a",
-      "local_hash": "ee5dba148c08ed12e0261d6fea397097a5ab08c7c8009c9b31ceab48ab174331",
+      "template_hash": "9e18956423b1efa697e540660e498344ea1116e4952aedb12df0c1baac7a4287",
+      "local_hash": "0d96adfa2232233e46234f36c1e187c439da08657f881261dd9b3374b0e1e474",
       "modified": false
     },
     ".claude/settings.json": {
@@ -135,6 +135,11 @@
     ".mcp.json": {
       "template_hash": "c3de4d9a90dac587a278965ebaa1aff278b1bf3b6bb828058902c968e7740e8b",
       "local_hash": "c3de4d9a90dac587a278965ebaa1aff278b1bf3b6bb828058902c968e7740e8b",
+      "modified": false
+    },
+    "scripts/container-setup.sh": {
+      "template_hash": "157611dd6d7f0f0a049ccbd87e00ee22dc39ed5933031d5d7366bec9d04c7008",
+      "local_hash": "32dbfd426247547413f9905b45ce86d7e3730b4c0d4cb80f55e8d4dbbc263a31",
       "modified": false
     }
   },
