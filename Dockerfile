@@ -1,6 +1,9 @@
 # Professional-grade Agent Container with Native Docker Isolation
 FROM python:3.13-slim-bookworm
 
+# Enable bash strict mode for all RUN commands
+SHELL ["/bin/bash", "-euo", "pipefail", "-c"]
+
 # Install development tools in one layer
 RUN apt-get update && apt-get install -y --no-install-recommends \
     # Core development
@@ -21,7 +24,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     # Additional utilities
     unzip zip rsync \
     && rm -rf /var/lib/apt/lists/* \
-    && apt-get clean
+    && apt-get clean \
+    && command -v direnv \
+    && command -v gh
 
 # Install Node.js properly
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
@@ -45,19 +50,25 @@ RUN --mount=type=secret,id=github_token \
       echo "Installing Genesis CLI from GitHub Releases..."; \
       export GITHUB_TOKEN="$(cat /run/secrets/github_token)"; \
       \
-      # Download wheel files with error checking
-      urls=$(curl -fsSH "Authorization: token ${GITHUB_TOKEN}" \
+      # Get asset IDs and names for wheel files
+      assets=$(curl -fsSH "Authorization: token ${GITHUB_TOKEN}" \
         https://api.github.com/repos/jhousteau/genesis/releases/latest \
-        | jq -r '.assets[] | select(.name|endswith(".whl")) | .browser_download_url'); \
+        | jq -r '.assets[] | select(.name|endswith(".whl")) | "\(.id):\(.name)"'); \
       \
-      if [ -z "$urls" ]; then \
+      if [ -z "$assets" ]; then \
         echo "No wheel files found in latest release"; \
         exit 0; \
       fi; \
       \
-      for url in $urls; do \
-        echo "Downloading: $(basename "$url")"; \
-        curl -fsSLH "Authorization: token ${GITHUB_TOKEN}" -O "$url"; \
+      # Download using asset API
+      for asset in $assets; do \
+        id="${asset%%:*}"; \
+        name="${asset#*:}"; \
+        echo "Downloading: $name"; \
+        curl -fsSLH "Authorization: token ${GITHUB_TOKEN}" \
+          -H "Accept: application/octet-stream" \
+          "https://api.github.com/repos/jhousteau/genesis/releases/assets/$id" \
+          -o "$name"; \
       done; \
       \
       # Install shared-core first, then cli (dependency order matters)

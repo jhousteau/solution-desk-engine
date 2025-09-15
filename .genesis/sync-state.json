@@ -1,5 +1,5 @@
 {
-  "last_sync": "2025-09-14T20:59:22.203559+00:00",
+  "last_sync": "2025-09-15T01:31:36.286716+00:00",
   "template_version": "v0.13.0",
   "files": {
     ".claude/hooks/validate-bash-command.sh": {
@@ -103,8 +103,8 @@
       "modified": false
     },
     "Dockerfile": {
-      "template_hash": "f6e45f34809dbb754189659364c5cb509252882d452dc46b47474fa8f24be106",
-      "local_hash": "1de982ca3eb788befb97ebdf4b82c963bbcf40490cb7a15a6be9d41c5e257d39",
+      "template_hash": "fc71580b9ed2b655854954de2138858e6199c03b3473c3dadb2d2a68aafce407",
+      "local_hash": "09b8fdbed372c530edd282edf9ab8b7db4eafa62386151a268b30d1b68708487",
       "modified": false
     },
     "docker-compose.yml": {
