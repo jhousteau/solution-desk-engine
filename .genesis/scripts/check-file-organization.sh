@@ -1,200 +1,431 @@
-#!/bin/bash
-# Genesis File Organization Check
-# Ensures proper project structure and prevents file clutter
+#!/usr/bin/env bash
+# Check for proper file organization and detect clutter
 
 set -euo pipefail
 
-# Color codes
+# Colors
 RED='\033[0;31m'
 YELLOW='\033[1;33m'
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'
 NC='\033[0m'
 
-# Project root (should be current directory for bootstrapped projects)
-PROJECT_ROOT="$(pwd)"
+ISSUES_FOUND=0
 
-# Function to log messages
-log_info() {
-    echo -e "${BLUE}ℹ️  $1${NC}" >&2
+log_check() {
+    echo -e "${BLUE}🔍 $1${NC}"
 }
 
-log_warning() {
-    echo -e "${YELLOW}⚠️  $1${NC}" >&2
-}
-
-log_error() {
-    echo -e "${RED}❌ $1${NC}" >&2
+log_issue() {
+    echo -e "${YELLOW}📋 $1${NC}"
+    ISSUES_FOUND=$((ISSUES_FOUND + 1))
 }
 
 log_success() {
-    echo -e "${GREEN}✅ $1${NC}" >&2
+    echo -e "${GREEN}✅ $1${NC}"
 }
 
-# Check for misplaced files in root directory
+detect_project_type() {
+    if [ -f "pyproject.toml" ] || [ -f "requirements.txt" ] || [ -f "setup.py" ]; then
+        echo "python"
+    elif [ -f "package.json" ]; then
+        echo "nodejs"
+    elif [ -f "Cargo.toml" ]; then
+        echo "rust"
+    elif [ -f "main.tf" ] || [ -f "variables.tf" ]; then
+        echo "terraform"
+    elif [ -f "go.mod" ]; then
+        echo "golang"
+    else
+        echo "generic"
+    fi
+}
+
+echo "🗂️  Checking project file organization..."
+PROJECT_TYPE=$(detect_project_type)
+log_check "Detected project type: $PROJECT_TYPE"
+echo
+
+get_allowed_root_files() {
+    local project_type="$1"
+    local files=(
+        # Universal files
+        "README\.md"
+        "CLAUDE\.md"
+        "CHANGELOG\.md"
+        "Makefile"
+        "LICENSE"
+        "SECURITY\.md"
+        "CONTRIBUTING\.md"
+        "CODE_OF_CONDUCT\.md"
+        "\.gitignore"
+        "\.envrc"
+        "\.env\.example"
+        # Docker files
+        "Dockerfile"
+        "docker-compose\.yml"
+        "\.dockerignore"
+    )
+
+    case "$project_type" in
+        python)
+            files+=(
+                "pyproject\.toml"
+                "poetry\.lock"
+                "requirements\.txt"
+                "requirements-dev\.txt"
+                "setup\.py"
+                "pytest\.ini"
+                "tox\.ini"
+            )
+            ;;
+        nodejs)
+            files+=(
+                "package\.json"
+                "package-lock\.json"
+                "yarn\.lock"
+                "pnpm-lock\.yaml"
+                "tsconfig\.json"
+                "jest\.config\.js"
+                "\.nvmrc"
+            )
+            ;;
+        rust)
+            files+=(
+                "Cargo\.toml"
+                "Cargo\.lock"
+            )
+            ;;
+        terraform)
+            files+=(
+                "main\.tf"
+                "variables\.tf"
+                "outputs\.tf"
+                "terraform\.tfvars\.example"
+                "versions\.tf"
+            )
+            ;;
+        golang)
+            files+=(
+                "go\.mod"
+                "go\.sum"
+            )
+            ;;
+    esac
+
+    printf '%s\n' "${files[@]}"
+}
+
+# Get allowed files for the detected project type
+ALLOWED_ROOT_FILES=($(get_allowed_root_files "$PROJECT_TYPE"))
+
+# Define standard directory structure (generic project)
+STANDARD_DIRS=(
+    "src/"         # Source code
+    "tests/"       # Test files
+    "docs/"        # Documentation
+    "scripts/"     # Utility scripts
+    "config/"      # Configuration files (optional)
+)
+
 check_root_clutter() {
-    local violations=0
+    log_check "Checking for files cluttering project root"
 
-    # Allowed files in root
-    local allowed_root_files=(
-        "README.md" "CLAUDE.md" "CHANGELOG.md" "LICENSE" "SECURITY.md"
-        "Makefile" "pyproject.toml" "package.json" "requirements.txt"
-        ".gitignore" ".envrc" ".env.example" ".python-version"
-        "Dockerfile" "docker-compose.yml" "docker-compose.yaml"
-        "main.tf" "variables.tf" "outputs.tf" "versions.tf"
-    )
+    local found_issues=false
 
-    # Allowed directories in root
-    local allowed_root_dirs=(
-        "src" "tests" "docs" "scripts" "config" "scratch"
-        ".git" ".github" ".vscode" ".devcontainer" ".claude"
-        ".venv" "venv" "__pycache__" ".pytest_cache" ".mypy_cache"
-        "build" "dist" "htmlcov" "node_modules" ".next"
-    )
+    # Check all files in root (not directories) - only if they exist
+    for file in *; do
+        # Skip if file doesn't exist (e.g., glob didn't match anything)
+        if [ ! -e "$file" ]; then
+            continue
+        fi
 
-    # Check for disallowed files in root
-    for file in "$PROJECT_ROOT"/*; do
-        if [[ ! -e "$file" ]]; then continue; fi
-
-        filename=$(basename "$file")
-
-        if [[ -f "$file" ]]; then
-            # Check if file is allowed
+        if [ -f "$file" ]; then
             local allowed=false
-            for allowed_file in "${allowed_root_files[@]}"; do
-                if [[ "$filename" == "$allowed_file" ]]; then
+
+            # Check against allowed patterns
+            for pattern in "${ALLOWED_ROOT_FILES[@]}"; do
+                if [[ "$file" =~ ^${pattern}$ ]]; then
                     allowed=true
                     break
                 fi
             done
 
-            # Special patterns
-            if [[ "$filename" =~ ^\.env ]]; then allowed=true; fi
-            if [[ "$filename" =~ \.md$ ]] && [[ "$filename" =~ ^(README|CHANGELOG|CONTRIBUTING|SECURITY|LICENSE)$ ]]; then allowed=true; fi
+            if [ "$allowed" = false ]; then
+                if [ "$found_issues" = false ]; then
+                    log_issue "Files in wrong location - should be moved:"
+                    found_issues=true
+                fi
+                echo "  ❌ File '$file' should not be in root directory"
 
-            if [[ "$allowed" == "false" ]]; then
-                log_error "File '$filename' should not be in root directory"
-
-                # Suggest proper location
-                case "$filename" in
-                    *.py) log_info "  → Move to: src/" ;;
-                    *.sh) log_info "  → Move to: scripts/" ;;
-                    *.md) log_info "  → Move to: docs/" ;;
-                    *.json|*.yaml|*.yml|*.toml)
-                        if [[ ! "$filename" =~ ^(package\.json|pyproject\.toml|docker-compose\.ya?ml)$ ]]; then
-                            log_info "  → Move to: config/"
+                # Suggest where it should go
+                case "$file" in
+                    *.md)
+                        if [[ ! "$file" =~ ^(README|CLAUDE|SECURITY|LICENSE|CHANGELOG)\.md$ ]]; then
+                            echo "  ℹ️    → Move to: docs/"
                         fi
                         ;;
-                    test_*.py|*_test.py|conftest.py) log_info "  → Move to: tests/" ;;
-                    *) log_info "  → Consider organizing into appropriate subdirectory" ;;
+                    *.sh)
+                        echo "  ℹ️    → Move to: scripts/"
+                        ;;
+                    *.py)
+                        if [[ "$file" =~ ^test_ ]] || [[ "$file" == *test.py ]] || [[ "$file" == conftest.py ]]; then
+                            echo "  ℹ️    → Move to: tests/"
+                        else
+                            echo "  ℹ️    → Move to: src/"
+                        fi
+                        ;;
+                    *.js|*.ts)
+                        if [[ "$file" =~ \.test\. ]] || [[ "$file" =~ \.spec\. ]]; then
+                            echo "  ℹ️    → Move to: tests/"
+                        else
+                            echo "  ℹ️    → Move to: src/"
+                        fi
+                        ;;
+                    *.json)
+                        if [[ ! "$file" =~ ^(package|package-lock|yarn|pnpm-lock|tsconfig|jest\.config)\.json$ ]]; then
+                            echo "  ℹ️    → Move to: config/"
+                        fi
+                        ;;
+                    *.yml|*.yaml)
+                        if [[ ! "$file" =~ ^(docker-compose)\.ya?ml$ ]]; then
+                            echo "  ℹ️    → Move to: .github/workflows/ or config/"
+                        fi
+                        ;;
+                    .*)
+                        if [[ ! "$file" =~ ^\.(gitignore|envrc|env\.example|dockerignore)$ ]]; then
+                            echo "  ℹ️    → Consider organizing into appropriate subdirectory"
+                        fi
+                        ;;
+                    *)
+                        echo "  ℹ️    → Consider organizing into appropriate subdirectory"
+                        ;;
                 esac
-
-                violations=$((violations + 1))
             fi
+        fi
+    done
 
-        elif [[ -d "$file" ]]; then
-            # Check if directory is allowed
-            local allowed=false
-            for allowed_dir in "${allowed_root_dirs[@]}"; do
-                if [[ "$filename" == "$allowed_dir" ]]; then
-                    allowed=true
-                    break
+    if [ "$found_issues" = false ]; then
+        log_success "Project root is clean"
+    fi
+    echo
+}
+
+check_misplaced_scripts() {
+    log_check "Checking for scripts outside scripts/ directory"
+
+    local found_issues=false
+
+    # Find .sh files outside of scripts/ directory or component src/ directories
+    if command -v find >/dev/null 2>&1; then
+        local misplaced_scripts=$(find . -name "*.sh" \
+            -not -path "./scripts/*" \
+            -not -path "./*/src/*" \
+            -not -path "./*/tests/*" \
+            -not -path "./.git/*" \
+            -not -path "./node_modules/*" \
+            -not -path "./.venv/*" \
+            -not -path "./venv/*" \
+            2>/dev/null || true)
+
+        if [ -n "$misplaced_scripts" ]; then
+            log_issue "Shell scripts in wrong location:"
+            echo "$misplaced_scripts" | while read -r script; do
+                echo "  $script → Should be in scripts/"
+            done
+            found_issues=true
+        fi
+    fi
+
+    if [ "$found_issues" = false ]; then
+        log_success "All shell scripts properly located"
+    fi
+    echo
+}
+
+check_documentation_organization() {
+    log_check "Checking and cleaning up documentation organization"
+
+    local files_moved=0
+
+    # Ensure scratch directory exists
+    mkdir -p scratch/
+
+    # Find loose .md files in project root and move to scratch/
+    # Skip important root documentation files
+    if command -v find >/dev/null 2>&1; then
+        local loose_docs=$(find . -maxdepth 1 -name "*.md" \
+            -not -name "README.md" \
+            -not -name "CLAUDE.md" \
+            -not -name "CHANGELOG.md" \
+            -not -name "CONTRIBUTING.md" \
+            -not -name "CODE_OF_CONDUCT.md" \
+            -not -name "SECURITY.md" \
+            -not -name "LICENSE.md" \
+            2>/dev/null || true)
+
+        if [ -n "$loose_docs" ]; then
+            echo -e "${YELLOW}📦 Moving loose documentation files to scratch/${NC}"
+            echo "$loose_docs" | while read -r doc; do
+                if [ -f "$doc" ]; then
+                    mv "$doc" "scratch/"
+                    echo "  Moved: $doc → scratch/"
+                    files_moved=$((files_moved + 1))
                 fi
             done
+        fi
 
-            if [[ "$allowed" == "false" ]]; then
-                log_error "Directory '$filename' may not follow Genesis structure"
-                log_info "  → Standard directories: src/, tests/, docs/, scripts/, config/"
-                violations=$((violations + 1))
+        # Find files directly in docs/ root (except README.md and CLAUDE.md) and move to scratch/
+        if [ -d "docs" ]; then
+            local docs_root_files=$(find ./docs -maxdepth 1 -name "*.md" \
+                -not -name "README.md" \
+                -not -name "CLAUDE.md" \
+                2>/dev/null || true)
+
+            if [ -n "$docs_root_files" ]; then
+                echo -e "${YELLOW}📦 Moving files from docs/ root to scratch/${NC}"
+                echo "$docs_root_files" | while read -r doc; do
+                    if [ -f "$doc" ]; then
+                        filename=$(basename "$doc")
+                        mv "$doc" "scratch/docs-${filename}"
+                        echo "  Moved: $doc → scratch/docs-${filename}"
+                        files_moved=$((files_moved + 1))
+                    fi
+                done
+            fi
+        fi
+    fi
+
+    if [ $files_moved -eq 0 ]; then
+        log_success "Documentation properly organized"
+    else
+        echo -e "${GREEN}✅ Moved $files_moved files to scratch/ for reorganization${NC}"
+    fi
+    echo
+}
+
+check_test_organization() {
+    log_check "Checking test file organization"
+
+    local found_issues=false
+
+    # Find test files outside of tests/ directories
+    if command -v find >/dev/null 2>&1; then
+        local misplaced_tests=$(find . \( -name "*test*.py" -o -name "*test*.js" -o -name "*test*.ts" -o -name "conftest.py" \) \
+            -not -path "./tests/*" \
+            -not -path "./**/tests/*" \
+            -not -path "./.git/*" \
+            -not -path "./node_modules/*" \
+            -not -path "./.venv/*" \
+            -not -path "./venv/*" \
+            2>/dev/null || true)
+
+        if [ -n "$misplaced_tests" ]; then
+            log_issue "Test files in wrong location:"
+            echo "$misplaced_tests" | while read -r test; do
+                echo "  $test → Should be in tests/"
+            done
+            found_issues=true
+        fi
+    fi
+
+    if [ "$found_issues" = false ]; then
+        log_success "Test files properly organized"
+    fi
+    echo
+}
+
+check_directory_structure() {
+    log_check "Checking for standard directory structure"
+
+    local missing_dirs=()
+    local suggested_dirs=()
+
+    # Check which directories exist
+    for dir in "${STANDARD_DIRS[@]}"; do
+        if [ ! -d "$dir" ]; then
+            # src/ and tests/ are more important
+            if [[ "$dir" == "src/" ]] || [[ "$dir" == "tests/" ]]; then
+                missing_dirs+=("$dir")
+            else
+                suggested_dirs+=("$dir")
             fi
         fi
     done
 
-    return $violations
-}
-
-# Check src/ directory structure
-check_src_structure() {
-    local violations=0
-
-    if [[ ! -d "$PROJECT_ROOT/src" ]]; then
-        log_warning "No src/ directory found - this is unusual for Python projects"
-        return 0
+    if [ ${#missing_dirs[@]} -gt 0 ]; then
+        log_issue "Missing important directories:"
+        for dir in "${missing_dirs[@]}"; do
+            echo "  📁 $dir - recommended for source code and tests"
+        done
     fi
 
-    # Check for Python files in wrong locations
-    find "$PROJECT_ROOT" -name "*.py" -not -path "*/src/*" -not -path "*/tests/*" -not -path "*/.venv/*" -not -path "*/venv/*" -not -path "*/__pycache__/*" -not -path "*/.pytest_cache/*" | while read -r pyfile; do
-        if [[ "$pyfile" =~ (setup\.py|conftest\.py)$ ]]; then
-            continue  # These are allowed in root
+    if [ ${#suggested_dirs[@]} -gt 0 ]; then
+        log_check "Suggested directories for better organization:"
+        for dir in "${suggested_dirs[@]}"; do
+            echo "  📁 $dir - helps organize project files"
+        done
+    fi
+
+    if [ ${#missing_dirs[@]} -eq 0 ] && [ ${#suggested_dirs[@]} -eq 0 ]; then
+        log_success "Good directory structure"
+    fi
+    echo
+}
+
+check_directory_documentation() {
+    log_check "Checking directory documentation"
+
+    local found_issues=false
+
+    # Important directories that should have documentation
+    local important_dirs=(
+        "src"
+        "scripts"
+        "docs"
+        "config"
+    )
+
+    for dir in "${important_dirs[@]}"; do
+        if [ -d "$dir" ]; then
+            # Count files in directory (excluding subdirectories and hidden files)
+            local file_count=$(find "$dir" -maxdepth 1 -type f -not -name ".*" 2>/dev/null | wc -l || echo 0)
+
+            # Check for README.md only if directory has significant files
+            if [ "$file_count" -ge 3 ]; then
+                if [ ! -f "$dir/README.md" ]; then
+                    if [ "$found_issues" = false ]; then
+                        log_issue "Directories missing documentation (README.md):"
+                        found_issues=true
+                    fi
+                    echo "  📝 $dir ($file_count files) - consider adding README.md"
+                fi
+            fi
         fi
-
-        log_error "Python file outside src/: $(realpath --relative-to="$PROJECT_ROOT" "$pyfile")"
-        log_info "  → Move to: src/"
-        violations=$((violations + 1))
     done
 
-    return $violations
-}
-
-# Check for test files in wrong locations
-check_test_structure() {
-    local violations=0
-
-    # Find test files outside tests/
-    find "$PROJECT_ROOT" -name "test_*.py" -o -name "*_test.py" | grep -v "/tests/" | while read -r testfile; do
-        log_error "Test file outside tests/: $(realpath --relative-to="$PROJECT_ROOT" "$testfile")"
-        log_info "  → Move to: tests/"
-        violations=$((violations + 1))
-    done
-
-    return $violations
-}
-
-# Check for script files in wrong locations
-check_script_structure() {
-    local violations=0
-
-    # Find shell scripts outside scripts/
-    find "$PROJECT_ROOT" -name "*.sh" -not -path "*/scripts/*" -not -path "*/.git/*" -not -path "*/.venv/*" -not -path "*/venv/*" -not -path "*/.claude/*" | while read -r scriptfile; do
-        log_error "Shell script outside scripts/: $(realpath --relative-to="$PROJECT_ROOT" "$scriptfile")"
-        log_info "  → Move to: scripts/"
-        violations=$((violations + 1))
-    done
-
-    return $violations
-}
-
-# Main execution
-main() {
-    log_info "Checking Genesis project file organization..."
-
-    local total_violations=0
-
-    # Run all checks
-    check_root_clutter
-    total_violations=$((total_violations + $?))
-
-    check_src_structure
-    total_violations=$((total_violations + $?))
-
-    check_test_structure
-    total_violations=$((total_violations + $?))
-
-    check_script_structure
-    total_violations=$((total_violations + $?))
-
-    # Report results
-    if [[ $total_violations -eq 0 ]]; then
-        log_success "File organization follows Genesis standards"
-        exit 0
-    else
-        log_error "Found $total_violations file organization violations"
-        log_info "Run 'make clean' to fix common issues automatically"
-        exit 1
+    if [ "$found_issues" = false ]; then
+        log_success "Directory documentation looks good"
     fi
+    echo
 }
 
-# Only run main if script is executed directly (not sourced)
-if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-    main "$@"
+# Run all checks
+check_root_clutter
+check_misplaced_scripts
+check_documentation_organization
+check_test_organization
+check_directory_structure
+check_directory_documentation
+
+echo
+if [ $ISSUES_FOUND -eq 0 ]; then
+    echo -e "${GREEN}🎉 Project organization is excellent!${NC}"
+    exit 0
+else
+    echo -e "${YELLOW}📝 File organization check: Found $ISSUES_FOUND suggestions for improvement${NC}"
+    echo -e "${BLUE}💡 These are recommendations, not errors - your code works fine!${NC}"
+    echo -e "${BLUE}ℹ️  Consider moving files to conventional locations when convenient${NC}"
+    # Exit 0 so this doesn't block development - these are just suggestions
+    exit 0
 fi

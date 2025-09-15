@@ -1,4 +1,4 @@
-.PHONY: help setup install dev test test-cov format lint typecheck quality clean build install-cli run-dev worktree-create worktree-list worktree-remove genesis-commit genesis-status genesis-clean
+.PHONY: help setup install dev test test-cov format lint typecheck quality check-org validate-bootstrap clean build install-cli run-dev worktree-create worktree-list worktree-remove genesis-commit genesis-status genesis-clean sync version version-show version-bump-patch version-bump-minor version-bump-major version-sync
 
 help: ## Show this help message
 	@echo 'Usage: make [target]'
@@ -6,11 +6,8 @@ help: ## Show this help message
 	@echo 'Targets:'
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
-setup: ## Install dependencies and set up development environment
-	@echo "Setting up solution-desk-engine development environment..."
-	poetry install
-	poetry run pre-commit install --install-hooks
-	@echo "✅ Setup complete!"
+setup: ## Run initial project setup
+	./scripts/setup.sh
 
 install: ## Install dependencies only
 	poetry install
@@ -35,7 +32,13 @@ typecheck: ## Type check with mypy
 
 quality: format lint typecheck ## Run all quality checks
 
-clean: ## Clean build artifacts
+check-org: ## Check project file organization
+	./.genesis/scripts/check-file-organization.sh
+
+validate-bootstrap: ## Validate that bootstrap setup completed successfully
+	./.genesis/scripts/validate-bootstrap.sh
+
+clean: ## Clean build artifacts and backup files
 	rm -rf build/
 	rm -rf dist/
 	rm -rf *.egg-info/
@@ -43,6 +46,10 @@ clean: ## Clean build artifacts
 	rm -rf htmlcov/
 	rm -rf .pytest_cache/
 	rm -rf .mypy_cache/
+	find . -name "*.bak" -type f -delete 2>/dev/null || true
+	find . -name "__pycache__" -type d -exec rm -rf {} + 2>/dev/null || true
+	find . -name "*.pyc" -type f -delete 2>/dev/null || true
+	@echo "Cleaned build artifacts, cache files, and backup files"
 
 build: ## Build the package
 	poetry build
@@ -105,3 +112,28 @@ genesis-clean: ## Clean Genesis workspace (remove old worktrees and build artifa
 	else \
 		echo "❌ Error: Genesis CLI not found. Install with: pip install genesis-cli"; \
 	fi
+
+sync: ## Update project support files from Genesis templates
+	@if command -v genesis >/dev/null 2>&1; then \
+		genesis sync; \
+	else \
+		echo "❌ Error: Genesis CLI not found. Install with: pip install genesis-cli"; \
+	fi
+
+# Version Management Targets
+version: version-show ## Show current version (alias for version-show)
+
+version-show: ## Show current project version
+	@python .genesis/scripts/version.py show
+
+version-bump-patch: ## Bump patch version (1.0.0 → 1.0.1)
+	@./.genesis/scripts/bump-version.sh patch
+
+version-bump-minor: ## Bump minor version (1.0.0 → 1.1.0)
+	@./.genesis/scripts/bump-version.sh minor
+
+version-bump-major: ## Bump major version (1.0.0 → 2.0.0)
+	@./.genesis/scripts/bump-version.sh major
+
+version-sync: ## Sync current version across all project files
+	@python .genesis/scripts/version.py sync

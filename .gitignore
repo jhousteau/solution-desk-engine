@@ -80,3 +80,6 @@ scratch/
 # Local environment
 .env.local
 .env.*.local
+
+# Secrets
+.secrets/

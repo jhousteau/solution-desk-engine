@@ -1,10 +1,10 @@
 # compose.yaml — Universal Hardened Dev Container for Genesis Projects
 # Usage examples:
-#   docker compose --profile cli up -d
+#   docker compose --profile agent up -d
 #   docker compose --profile api up -d
 #   docker compose --profile ts  up -d
-#   docker compose logs -f dev
-#   docker compose exec dev bash
+#   docker compose logs -f agent
+#   docker compose exec agent bash
 
 name: solution-desk-engine-dev
 
@@ -61,24 +61,7 @@ x-common: &common
   command: ["bash", "-lc", "tail -f /dev/null"]
 
 services:
-  # Single service, multiple profiles. Pick one profile at a time.
-  dev:
-    <<: *common
-    container_name: solution-desk-engine-dev
-    # Choose one profile when starting (cli, api, or ts)
-    profiles: ["cli"]
-    environment:
-      # Keep HOME sane; Poetry creates .venv in project by default
-      HOME: /home/developer
-      PYTHONUNBUFFERED: "1"
-      PYTHONPATH: /workspace
-      LOG_LEVEL: info
-      ENABLE_GIT: "true"
-      PROJECT_NAME: solution-desk-engine
-      PROJECT_TYPE: cli-tool
-      PROJECT_MODE: development
-    # Open a shell with: docker compose --profile cli exec dev bash
-
+  # Multiple profiles available. Pick one profile at a time.
   api:
     <<: *common
     container_name: solution-desk-engine-api
@@ -123,6 +106,122 @@ services:
     read_only: false
     tmpfs:
       - /tmp:rw,nosuid,nodev,noexec,size=64m
+
+  # Professional Agent: Docker Native Isolation
+  agent:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      secrets:
+        - github_token
+    image: solution-desk-engine/agent:latest
+    container_name: solution-desk-engine-agent
+    profiles: ["agent"]
+
+    # Non-root user
+    user: "1000:1000"
+
+    # CRITICAL: Read-only root filesystem
+    read_only: true
+
+    # ONLY workspace is writable
+    volumes:
+      - workspace:/workspace:rw
+
+    # Temporary filesystems for runtime needs
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=100m
+      - /run:rw,noexec,nosuid,nodev,size=10m
+      - /var/tmp:rw,noexec,nosuid,nodev,size=50m
+
+    environment:
+      # Force everything to workspace
+      HOME: /workspace
+      USER: developer
+      SHELL: /bin/bash
+
+      # Development paths
+      PATH: /workspace/.local/bin:/workspace/.npm-global/bin:/workspace/.venv/bin:/usr/local/bin:/usr/bin:/bin
+      PYTHONPATH: /workspace
+      PYTHONUSERBASE: /workspace/.local
+
+      # Package managers
+      npm_config_prefix: /workspace/.npm-global
+      npm_config_cache: /workspace/.cache/npm
+      POETRY_VIRTUALENVS_PATH: /workspace/.venv
+      POETRY_CACHE_DIR: /workspace/.cache/poetry
+      PIP_CACHE_DIR: /workspace/.cache/pip
+
+      # Indicators for scripts
+      AGENT_JAILED: "true"
+      WORKSPACE_LOCKED: "true"
+
+      # Development settings
+      PYTHONUNBUFFERED: "1"
+      NODE_ENV: development
+      PROJECT_NAME: solution-desk-engine
+      PROJECT_TYPE: cli-tool
+      PROJECT_MODE: development
+      LOG_LEVEL: info
+      ENABLE_GIT: "true"
+
+    # Security hardening
+    security_opt:
+      - no-new-privileges:true
+      - apparmor:docker-default
+      - seccomp:.genesis/agent-seccomp.json
+
+    # Drop ALL capabilities, add back only essentials
+    cap_drop:
+      - ALL
+    cap_add:
+      # File operations within workspace
+      - CHOWN
+      - DAC_OVERRIDE
+      - FOWNER
+      - FSETID
+      - SETGID
+      - SETUID
+
+    # Resource limits (adjust based on needs)
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 4G
+          pids: 500
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+
+    # Process limits
+    ulimits:
+      nproc:
+        soft: 256
+        hard: 512
+      nofile:
+        soft: 1024
+        hard: 4096
+      core:
+        soft: 0
+        hard: 0
+      memlock:
+        soft: 67108864
+        hard: 67108864
+
+    # Keep container running for agent access
+    command: ["tail", "-f", "/dev/null"]
+
+    # Restart policy
+    restart: unless-stopped
+
+    # Logging
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+        compress: "true"
 
 # Build/run secrets (DON'T commit the file with the token)
 secrets:
