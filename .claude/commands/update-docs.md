@@ -1,369 +1,282 @@
 ---
 name: update-docs
-description: Automatically update documentation across 42 markdown files - extracts current state from code, updates READMEs, syncs command references, and maintains consistency
+description: Update project documentation - extracts current state from code, updates READMEs, syncs command references, and maintains consistency
 ---
 
 <role>
-You are the documentation maintenance coordinator. Your responsibility: keep all 42 documentation files synchronized with the actual codebase while preserving manually written content.
+You are the documentation maintenance coordinator. Your responsibility: keep documentation files synchronized with the actual codebase while preserving manually written content.
 </role>
 
 <purpose>
-Genesis has 42 markdown documentation files that need regular updates:
-- Component READMEs need current command lists
-- API docs need current function signatures
-- Guide docs need working examples
-- Module docs need current configurations
-
-This command automatically updates documentation from source code while preserving manual content.
+This command automatically updates documentation from source code while preserving manual content. It analyzes your project structure and updates documentation based on common patterns.
 </purpose>
 
 <scope>
-## Documentation Files to Update (42 total)
+## Documentation Files to Discover and Update
 
-### **Component READMEs (10)**
-```
-bootstrap/README.md          - Bootstrap tool documentation
-smart-commit/README.md       - Smart commit system
-worktree-tools/README.md     - Worktree management
-shared-python/README.md      - Python utilities
-shared-typescript/README.md  - TypeScript utilities
-testing/README.md            - Testing framework
-scripts/README.md            - Script catalog
-genesis/README.md            - Genesis CLI
-genesis/core/autofix/README.md  - Autofix module
-genesis/core/errors/README.md   - Error framework
-```
+The command will automatically discover and update documentation based on your project structure:
 
-### **Main Documentation (3)**
-```
-README.md                    - Project overview
-docs/README.md               - Documentation index
-templates/README.md          - Template catalog
-```
+### **Component READMEs**
+- Look for `README.md` files in subdirectories (src/, lib/, components/, modules/, etc.)
+- Update with current command lists, API references, and usage examples
 
-### **Guides & Architecture (19)**
-```
-docs/guides/getting-started.md
-docs/guides/sparse-worktrees.md
-docs/guides/agents/*.md      - 13 agent guides
-docs/architecture/*.md       - 2 architecture docs
-docs/standards/CLAUDE.md
-docs/vision/CLAUDE.md
-```
+### **Main Documentation**
+- `README.md` - Project overview and installation instructions
+- `docs/README.md` - Documentation index (if exists)
+- API documentation files in docs/ directory
 
-### **Infrastructure (7)**
-```
-terraform/README.md
-terraform/examples/README.md
-terraform/modules/*/README.md  - 4 module docs
-templates/terraform-project/README.md
-```
+### **Specialized Documentation**
+- Script catalogs (`scripts/README.md`)
+- Template documentation (`templates/README.md`)
+- Configuration guides
+- Architecture documentation (`docs/architecture/`)
+- User guides (`docs/guides/`)
 
-### **Never Update (3)**
-```
-CLAUDE.md                    - AI context (manual only)
-SECURITY.md                  - Security policy (manual only)
-docs/CLAUDE.md               - Documentation context (manual only)
-```
+### **Protected Files (Never Auto-Update)**
+- `CLAUDE.md` - AI context (manual only)
+- `SECURITY.md` - Security policy (manual only)
+- `LICENSE` - License file (manual only)
+- Any files marked with `<!-- MANUAL-ONLY -->` comment
 </scope>
 
 <procedure>
 
-## 1. **Scan Documentation Structure**
+## 1. **Scan Project Structure**
 ```bash
-echo "📚 Scanning documentation structure..."
+echo "📚 Scanning project documentation structure..."
 
-# Find all markdown files (excluding .claude and scratch)
+# Find all markdown files (excluding common ignore patterns)
 DOCS=$(find . -name "*.md" -type f \
-  | grep -v ".venv" \
-  | grep -v "node_modules" \
-  | grep -v ".git" \
-  | grep -v ".claude" \
-  | grep -v "scratch/" \
+  | grep -v ".venv\|venv\|node_modules\|.git\|.claude\|scratch\|__pycache__\|.next\|dist\|build" \
   | sort)
 
 echo "Found $(echo "$DOCS" | wc -l) documentation files"
+
+# Identify project type
+PROJECT_TYPE="unknown"
+[[ -f "package.json" ]] && PROJECT_TYPE="javascript"
+[[ -f "pyproject.toml" || -f "setup.py" ]] && PROJECT_TYPE="python"
+[[ -f "Cargo.toml" ]] && PROJECT_TYPE="rust"
+[[ -f "go.mod" ]] && PROJECT_TYPE="go"
+[[ -f "pom.xml" ]] && PROJECT_TYPE="java"
+
+echo "Detected project type: $PROJECT_TYPE"
 ```
 
 ## 2. **Update Component READMEs**
-For each component directory with a README.md:
+For each directory with a README.md:
 
 ```python
-# Extract component information
-component_name = "genesis"  # Example
-readme_path = f"{component_name}/README.md"
+import os
+import subprocess
+from pathlib import Path
 
-# Get current state from code
-if has_cli_commands(component_name):
-    commands = extract_cli_help(component_name)
+def update_component_readme(component_path):
+    """Update README.md for a component directory."""
+    readme_path = component_path / "README.md"
 
-if has_python_modules(component_name):
-    modules = extract_python_api(component_name)
+    if not readme_path.exists():
+        return
 
-if has_scripts(component_name):
-    scripts = list_scripts_with_help(component_name)
+    print(f"📝 Updating {readme_path}")
 
-# Update README sections
-update_section(readme_path, "## Commands", commands)
-update_section(readme_path, "## API Reference", modules)
-update_section(readme_path, "## Scripts", scripts)
-update_section(readme_path, "## Installation", get_dependencies())
+    # Extract information based on project type
+    commands = []
+    api_docs = []
+    scripts = []
+
+    # For Python projects
+    if any(Path(component_path).glob("*.py")):
+        api_docs = extract_python_docstrings(component_path)
+        commands = extract_cli_commands(component_path)
+
+    # For JavaScript/TypeScript projects
+    if any(Path(component_path).glob("*.js")) or any(Path(component_path).glob("*.ts")):
+        api_docs = extract_js_exports(component_path)
+
+    # For executable scripts
+    scripts = list_executable_scripts(component_path)
+
+    # Update README sections
+    update_readme_section(readme_path, "## Commands", commands)
+    update_readme_section(readme_path, "## API Reference", api_docs)
+    update_readme_section(readme_path, "## Scripts", scripts)
+
+# Process all component directories
+for component_dir in find_component_directories():
+    update_component_readme(Path(component_dir))
 ```
 
 ## 3. **Update Main README.md**
-```bash
-echo "📝 Updating main README.md..."
-
-# Extract Genesis CLI commands
-genesis --help > /tmp/genesis-help.txt
-
-# Extract version from pyproject.toml
-VERSION=$(grep "^version" pyproject.toml | cut -d'"' -f2)
-
-# Update sections
-update_readme_section "Installation" "pip install genesis-toolkit==$VERSION"
-update_readme_section "Commands" "$(genesis --help)"
-update_readme_section "Components" "$(list_components)"
-```
-
-## 4. **Update Script Catalog**
-```bash
-echo "📜 Updating scripts/README.md..."
-
-# List all scripts with their help text
-for script in scripts/*.sh; do
-    if [[ -x "$script" ]]; then
-        name=$(basename "$script")
-        help=$("$script" --help 2>/dev/null | head -n 1 || echo "No help available")
-        echo "- **$name**: $help"
-    fi
-done > /tmp/script-list.md
-
-# Update scripts README
-update_section "scripts/README.md" "## Available Scripts" "/tmp/script-list.md"
-```
-
-## 5. **Update Template Catalog**
-```bash
-echo "🎨 Updating templates/README.md..."
-
-# List all templates
-for template in templates/*/; do
-    if [[ -f "$template/template.yaml" ]]; then
-        name=$(basename "$template")
-        desc=$(grep "description:" "$template/template.yaml" | cut -d: -f2-)
-        echo "- **$name**: $desc"
-    fi
-done > /tmp/template-list.md
-
-update_section "templates/README.md" "## Available Templates" "/tmp/template-list.md"
-```
-
-## 6. **Update Documentation Index**
-```bash
-echo "📑 Updating docs/README.md..."
-
-# Generate documentation tree
-tree docs -I "__pycache__|*.pyc" --dirsfirst > /tmp/docs-tree.txt
-
-# Update navigation links
-generate_nav_links() {
-    for doc in docs/**/*.md; do
-        title=$(grep "^# " "$doc" | head -1 | sed 's/# //')
-        echo "- [$title]($doc)"
-    done
-}
-
-update_section "docs/README.md" "## Documentation Structure" "/tmp/docs-tree.txt"
-update_section "docs/README.md" "## Quick Links" "$(generate_nav_links)"
-```
-
-## 7. **Update API Documentation**
 ```python
-# For Python components
-def update_python_api_docs(component):
-    """Extract and update API documentation from Python modules."""
+# Extract project information
+project_name = get_project_name()  # From package.json, pyproject.toml, etc.
+version = get_project_version()
+description = get_project_description()
 
-    modules = find_python_modules(component)
-    for module in modules:
-        # Extract docstrings
-        functions = extract_functions_with_docstrings(module)
-        classes = extract_classes_with_docstrings(module)
+# Update main README sections
+update_readme_section("README.md", "## Installation", generate_install_instructions())
+update_readme_section("README.md", "## Usage", extract_main_usage_examples())
+update_readme_section("README.md", "## Commands", extract_cli_help())
+update_readme_section("README.md", "## Components", list_project_components())
 
-        # Generate markdown
-        api_md = generate_api_markdown(functions, classes)
-
-        # Update component README
-        readme = f"{component}/README.md"
-        update_section(readme, "## API Reference", api_md)
+print(f"✅ Updated main README.md for {project_name} v{version}")
 ```
 
-## 8. **Verify Cross-References**
+## 4. **Update Script Catalogs**
 ```bash
-echo "🔗 Verifying cross-references..."
+if [[ -d "scripts" ]]; then
+    echo "📜 Updating script documentation..."
 
-# Check for broken links between documents
-for doc in $DOCS; do
-    # Extract markdown links
-    links=$(grep -oE '\[.*\]\(.*\.md\)' "$doc" | sed 's/.*(\(.*\))/\1/')
+    # Generate script list with descriptions
+    (
+        echo "# Scripts"
+        echo ""
+        echo "Available scripts in this project:"
+        echo ""
 
-    for link in $links; do
-        # Resolve relative path
-        target=$(dirname "$doc")/"$link"
-        target=$(realpath "$target" 2>/dev/null)
+        for script in scripts/*; do
+            if [[ -x "$script" ]]; then
+                name=$(basename "$script")
+                # Try to get help text or description
+                help_text=$("$script" --help 2>/dev/null | head -n 1 ||
+                           grep -m 1 "^# " "$script" 2>/dev/null | sed 's/^# //' ||
+                           echo "Script: $name")
+                echo "- **$name**: $help_text"
+            fi
+        done
+    ) > /tmp/script-catalog.md
 
-        if [[ ! -f "$target" ]]; then
-            echo "⚠️  Broken link in $doc: $link"
+    update_readme_section "scripts/README.md" "## Available Scripts" "/tmp/script-catalog.md"
+fi
+```
+
+## 5. **Update API Documentation**
+```python
+def update_api_docs():
+    """Update API documentation based on project type."""
+
+    # For Python projects - extract from docstrings
+    if project_type == "python":
+        modules = find_python_modules()
+        for module in modules:
+            api_doc = extract_python_api(module)
+            if api_doc:
+                doc_path = f"docs/api/{module.stem}.md"
+                write_api_documentation(doc_path, api_doc)
+
+    # For JavaScript/TypeScript - extract from JSDoc comments
+    elif project_type == "javascript":
+        update_js_api_docs()
+
+    # For other languages - look for documented interfaces
+    else:
+        scan_for_documented_interfaces()
+
+update_api_docs()
+print("✅ API documentation updated")
+```
+
+## 6. **Update Configuration Documentation**
+```python
+# Look for configuration files and update their documentation
+config_files = find_config_files()  # .env.example, config.yml, etc.
+
+for config_file in config_files:
+    if should_document_config(config_file):
+        doc_path = f"docs/configuration/{Path(config_file).stem}.md"
+        generate_config_documentation(config_file, doc_path)
+
+print(f"✅ Updated documentation for {len(config_files)} configuration files")
+```
+
+## 7. **Verify Documentation Links**
+```bash
+echo "🔗 Checking documentation links..."
+
+# Find all markdown files and check internal links
+find . -name "*.md" -type f | while read -r file; do
+    # Extract relative links and check if files exist
+    grep -o '\](\.\/[^)]*\.md)' "$file" 2>/dev/null | while read -r link; do
+        target=$(echo "$link" | sed 's/](.\/\(.*\))/\1/')
+        if [[ ! -f "$(dirname "$file")/$target" ]]; then
+            echo "⚠️  Broken link in $file: $target"
         fi
     done
 done
 ```
 
-## 9. **Generate Update Report**
-```bash
-echo "=== Documentation Update Complete ==="
-echo ""
-echo "📊 Update Summary:"
-echo "  - Component READMEs: 10 updated"
-echo "  - Guide documents: 19 checked"
-echo "  - Infrastructure docs: 7 updated"
-echo "  - Template docs: 2 updated"
-echo ""
-echo "🔒 Preserved:"
-echo "  - CLAUDE.md files (manual only)"
-echo "  - SECURITY.md (policy document)"
-echo "  - Custom content sections"
-echo ""
-echo "✅ All documentation synchronized with codebase!"
+## 8. **Generate Documentation Index**
+```python
+def generate_doc_index():
+    """Generate a comprehensive documentation index."""
+
+    all_docs = find_all_markdown_files()
+
+    # Group by category
+    categories = {
+        "Getting Started": [],
+        "API Reference": [],
+        "Guides": [],
+        "Configuration": [],
+        "Components": [],
+        "Architecture": []
+    }
+
+    for doc in all_docs:
+        category = categorize_documentation(doc)
+        if category in categories:
+            categories[category].append(doc)
+
+    # Generate index
+    index_content = generate_index_markdown(categories)
+
+    # Write to docs/README.md or create index
+    if Path("docs").exists():
+        write_file("docs/README.md", index_content)
+    else:
+        append_to_main_readme("## Documentation Index", index_content)
+
+generate_doc_index()
+print("✅ Documentation index generated")
 ```
+
 </procedure>
 
-<preservation>
-## Content Preservation Rules
+<approach>
+## Documentation Update Strategy
 
-### **Auto-Generated Markers**
-Only update content between these markers:
-```markdown
-<!-- auto-generated-start -->
-Content here will be updated
-<!-- auto-generated-end -->
-```
+1. **Preserve Manual Content**: Never overwrite manually written sections unless they're clearly marked as auto-generated
+2. **Extract from Source**: Pull current information directly from code, configs, and help text
+3. **Follow Conventions**: Use consistent formatting and section structure across all docs
+4. **Validate Links**: Ensure all internal links work and external links are accessible
+5. **Version Awareness**: Update version references consistently across all documentation
 
-### **Manual Content Markers**
-Never modify content between these markers:
-```markdown
-<!-- manual-start -->
-This content is preserved
-<!-- manual-end -->
-```
+## Protected Patterns
+- Files with `<!-- MANUAL-ONLY -->` comment
+- Sections between `<!-- MANUAL START -->` and `<!-- MANUAL END -->`
+- CLAUDE.md, SECURITY.md, LICENSE files
+- Any file marked as protected in project settings
+</approach>
 
-### **Default Behavior**
-If no markers present:
-1. Look for standard sections (## Commands, ## API, ## Installation)
-2. Update only those sections
-3. Preserve all other content
+<examples>
+## Example Usage Patterns
 
-### **Protected Files**
-Never modify these files:
-- Any file containing `<!-- no-auto-update -->`
-- CLAUDE.md files (AI context)
-- SECURITY.md (policy)
-- Files in .claude/ directory
-</preservation>
+### For a Python CLI Project:
+- Updates `README.md` with current CLI commands from `--help`
+- Extracts API docs from docstrings in `src/` directory
+- Updates component READMEs in subdirectories
+- Catalogs scripts in `scripts/` directory
 
-<options>
-**Usage**: `/update-docs [options]`
+### For a JavaScript Library:
+- Extracts API from exported functions and JSDoc
+- Updates usage examples from test files
+- Documents configuration options
+- Updates build and deployment instructions
 
-**Options**:
-- `--check`: Dry run, show what would change without updating
-- `--component <name>`: Update only specific component docs
-- `--type <type>`: Update only specific type (readme|guide|api)
-- `--force`: Override preservation markers (use with caution)
-
-**Examples**:
-```bash
-# Update all documentation
-/update-docs
-
-# Check what would change
-/update-docs --check
-
-# Update only genesis component docs
-/update-docs --component genesis
-
-# Update only README files
-/update-docs --type readme
-```
-</options>
-
-<implementation>
-## Helper Functions
-
-```python
-def update_section(file_path, section_header, new_content):
-    """Update a specific section in a markdown file."""
-    with open(file_path, 'r') as f:
-        content = f.read()
-
-    # Find section boundaries
-    section_pattern = f"^{section_header}$"
-    next_section_pattern = r"^#{1,2} "
-
-    # Extract and replace section
-    # ... implementation
-
-def extract_cli_help(component):
-    """Extract CLI help text from a component."""
-    result = subprocess.run([component, "--help"], capture_output=True)
-    return result.stdout.decode()
-
-def extract_python_api(module_path):
-    """Extract API documentation from Python modules."""
-    import ast
-    import inspect
-
-    # Parse Python files and extract docstrings
-    # ... implementation
-```
-</implementation>
-
-<integration>
-## Integration with Other Commands
-
-### **Call from `/pr-merged`**
-After PR cleanup, suggest documentation update:
-```bash
-echo "📝 Documentation may need updating."
-echo "   Run: /update-docs --check"
-```
-
-### **Pre-commit Hook**
-Can be integrated into smart-commit workflow:
-```bash
-# In smart-commit.sh
-if [[ "$UPDATE_DOCS" == "true" ]]; then
-    /update-docs --component "$CHANGED_COMPONENT"
-fi
-```
-
-### **Scheduled Updates**
-Can be run periodically to maintain documentation:
-```bash
-# Weekly documentation sync
-/update-docs --check
-```
-</integration>
-
-<best-practices>
-1. **Always run `--check` first** to preview changes
-2. **Update after significant code changes** to keep docs current
-3. **Preserve custom content** using manual markers
-4. **Review generated content** for accuracy
-5. **Commit documentation updates separately** for clear history
-6. **Use component-specific updates** when working on single component
-7. **Verify cross-references** after major restructuring
-</best-practices>
-
----
-
-**Remember**: This command updates documentation automatically from source code. Always preserve manually written content and never modify context-critical files like CLAUDE.md.
+### For a Multi-Component Project:
+- Discovers all components with README.md files
+- Updates each component's documentation independently
+- Maintains consistent structure across components
+- Links components in main documentation index
+</examples>

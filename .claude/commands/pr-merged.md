@@ -72,7 +72,7 @@ PRESERVE_PATTERNS="genesis/claude|python:3.11|node:20|alpine:latest|ubuntu:lates
 
 # Remove containers matching branch pattern
 echo "Looking for branch-specific containers..."
-docker ps -a --format "{{.Names}}|{{.ID}}|{{.Status}}" | while IFS='|' read name id status; do
+docker ps -a --format "{{`{{.Names}}`}}|{{`{{.ID}}`}}|{{`{{.Status}}`}}" | while IFS='|' read name id status; do
     if [[ "$name" == *"${BRANCH_PATTERN}"* ]] || [[ "$name" == *"test"* ]] || [[ "$name" == *"tmp"* ]]; then
         echo "  Removing container: $name"
         docker rm -f "$id" 2>/dev/null || true
@@ -85,7 +85,7 @@ docker container prune -f --filter "until=24h"
 
 # Clean up images intelligently
 echo "Cleaning Docker images..."
-docker images --format "{{.Repository}}:{{.Tag}}|{{.ID}}|{{.CreatedAt}}" | while IFS='|' read ref id created; do
+docker images --format "{{`{{.Repository}}`}}:{{`{{.Tag}}`}}|{{`{{.ID}}`}}|{{`{{.CreatedAt}}`}}" | while IFS='|' read ref id created; do
     # Skip if it matches preserve patterns
     if echo "$ref" | grep -qE "$PRESERVE_PATTERNS"; then
         continue
@@ -169,7 +169,7 @@ git worktree list
 
 echo ""
 echo "🐳 Docker status:"
-docker ps --format "table {{.Names}}\t{{.Status}}" | head -5
+docker ps --format "table {{`{{.Names}}`}}\t{{`{{.Status}}`}}" | head -5
 
 echo ""
 echo "📝 Your open issues:"

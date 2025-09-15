@@ -1,7 +1,7 @@
 #!/bin/bash
-set -e
+set -euo pipefail
 
-echo "🚀 Setting up {{project_name}} development environment..."
+echo "🚀 Setting up solution-desk-engine development environment..."
 
 # Change to project root directory (parent of scripts/)
 cd "$(dirname "$0")/.."
@@ -26,19 +26,18 @@ fi
 # Install Genesis CLI for project commands
 echo "🔧 Installing Genesis CLI..."
 if [[ -d "../genesis" ]]; then
-    # Install Genesis from local development directory using pip (not poetry)
-    # This ensures proper editable install that Genesis can find its root
+    # Local development - install shared-core first, then CLI
+    if [[ -d "../genesis/shared-python" ]]; then
+        poetry run pip install -e "../genesis/shared-python" 2>/dev/null || true
+    fi
     poetry run pip install -e "../genesis"
     echo "✅ Genesis CLI installed from local development version"
-elif command -v pip >/dev/null 2>&1; then
-    # Try to install Genesis from PyPI (if published)
-    if poetry run pip install genesis-cli 2>/dev/null; then
-        echo "✅ Genesis CLI installed from PyPI"
-    else
-        echo "⚠️  Genesis CLI not available via PyPI, using project-specific commands"
-    fi
+elif [[ -n "${GITHUB_TOKEN}" ]]; then
+    # Install latest from GitHub (works with private repos) - force reinstall
+    poetry run pip install --force-reinstall "genesis-cli @ git+https://github.com/jhousteau/genesis.git@main"
+    echo "✅ Genesis CLI installed from GitHub"
 else
-    echo "⚠️  Could not install Genesis CLI - using project-specific commands"
+    echo "⚠️  Could not install Genesis CLI - GITHUB_TOKEN not set"
 fi
 
 # Check if direnv is available

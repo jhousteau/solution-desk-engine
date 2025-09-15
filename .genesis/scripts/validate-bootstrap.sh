@@ -114,16 +114,16 @@ validate_scripts() {
     # Check required scripts
     local required_scripts=("check-file-organization.sh")
     for script in "${required_scripts[@]}"; do
-        if [ -f "scripts/$script" ]; then
+        if [ -f ".genesis/scripts/$script" ]; then
             log_success "$script present"
 
-            if [ -x "scripts/$script" ]; then
+            if [ -x ".genesis/scripts/$script" ]; then
                 log_success "$script is executable"
             else
                 log_error "$script not executable (chmod +x needed)"
             fi
         else
-            log_error "Missing required script: scripts/$script"
+            log_error "Missing required script: .genesis/scripts/$script"
         fi
     done
 
