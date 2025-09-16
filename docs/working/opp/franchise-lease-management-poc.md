@@ -1,28 +1,36 @@
 # Proof of Concept Scope Document
-## Franchise Lease Management System
+## Franchise Lease Management System - Google Cloud AI Platform
 
-**Version:** 1.0
+**Version:** 2.0
 **Date:** September 2025
 **Duration:** 4-6 weeks
-**Purpose:** Demonstrate core capabilities and ROI potential
+**Environment:** Capgemini GCP Innovation Lab - Customer Sandbox
+**Purpose:** Demonstrate AI-powered lease analysis and conversational insights across 50 franchise lease documents
 
 ---
 
 ## 1. POC Objectives
 
 ### 1.1 Primary Goals
-- Demonstrate the feasibility of AI-powered document search across lease portfolios
-- Prove automated extraction of critical dates and key terms from lease documents
-- Show immediate time savings in document retrieval and information discovery
-- Validate the user experience for non-technical franchise operators
-- Establish technical architecture foundation for full system
+- Upload and analyze 50 franchise lease documents on Google Cloud Platform
+- Demonstrate conversational search and analysis across the entire lease portfolio
+- Extract and analyze 5 critical data elements with specialized AI processing
+- Provide rent forecasting with graduated escalation calculations
+- Enable natural language insights and comparative analysis across properties
+- Establish Google Cloud architecture foundation for enterprise deployment
 
 ### 1.2 Success Criteria
-- Upload and process 25-50 actual lease documents
-- Successfully extract 85%+ of critical dates automatically
-- Answer natural language queries with 90%+ accuracy
-- Reduce document search time from hours to seconds
-- Achieve positive user feedback from 3-5 test users
+- Process all 50 lease documents with Google Cloud Document AI
+- Extract 5 key data elements with 90%+ accuracy:
+  - Exclusion language clauses
+  - Commencement dates
+  - Rent rates and schedules
+  - Graduated rent forecasting calculations
+  - Expiration dates
+- Enable conversational queries: "Show me leases with territorial exclusions"
+- Generate rent forecasting projections for lease portfolio
+- Reduce lease analysis time from days to minutes
+- Demonstrate portfolio-wide comparative insights
 
 ---
 
@@ -30,79 +38,79 @@
 
 ### 2.1 In Scope - Core Features
 
-#### 2.1.1 Document Management (Basic)
+#### 2.1.1 Google Cloud Document Processing Pipeline
 **What We'll Build:**
-- Single-tenant document repository
-- Upload capability for PDF documents (up to 25MB per file)
-- Simple folder structure (Location → Document Type)
-- Basic metadata tagging (location, document type, dates)
-- Document preview and download
-- Support for 25-50 documents total
+- Google Cloud Storage bucket for 50 franchise lease documents
+- Document AI OCR processing for text extraction
+- Vertex AI custom models for specialized data extraction
+- BigQuery warehouse for structured lease data
+- Vector embeddings for semantic search capabilities
+- Cloud Functions for processing orchestration
 
 **What We'll Demonstrate:**
-- Centralized document storage replacing scattered files
-- Quick document access from any device
-- Basic organization structure
+- Scalable document processing on Google Cloud
+- Enterprise-grade OCR and AI extraction
+- Cloud-native architecture for lease management
 
-#### 2.1.2 AI-Powered Search (Showcase Feature)
+#### 2.1.2 Conversational Lease Analysis (Showcase Feature)
 **What We'll Build:**
-- Natural language search interface
-- Full-text search across all uploaded documents
-- Pre-defined smart queries:
-  - "Show me all leases expiring in 2026"
-  - "Find locations with rent increases this year"
-  - "Which leases have renewal options?"
-  - "Show me all CAM reconciliation deadlines"
-- Search result highlighting
-- Query history for the session
+- Natural language conversational interface powered by Vertex AI
+- Semantic search across all 50 lease documents using vector embeddings
+- Portfolio-wide analytical queries:
+  - "Show me all leases with exclusive territory clauses"
+  - "Which properties have rent escalations above 3% annually?"
+  - "Find leases expiring in 2026 with renewal options"
+  - "Compare exclusion restrictions across all franchise locations"
+- Contextual follow-up conversations
+- Visual analytics and comparative insights
 
 **What We'll Demonstrate:**
-- Instant answers to complex lease questions
-- No need to manually review documents
-- Intelligence that understands lease terminology
+- Conversational lease portfolio analysis
+- AI-powered insights across document collection
+- Complex multi-document pattern recognition
 
-#### 2.1.3 Automated Data Extraction
+#### 2.1.3 Specialized 5-Element Data Extraction
 **What We'll Build:**
-- Automatic extraction of:
-  - Lease commencement and expiration dates
-  - Current rent amounts
-  - Renewal option dates and terms
-  - Notice requirement periods
-  - Landlord and tenant names
-  - Location addresses
-- Extraction confidence scoring
-- Manual override capability for corrections
+- **Exclusion Language Analysis**: AI-powered extraction and categorization of restrictive clauses, territorial exclusions, and use limitations
+- **Commencement Date Extraction**: Precise date parsing with validation across multiple date formats and legal terminology
+- **Rent Rate & Schedule Processing**: Comprehensive extraction of base rent, escalation clauses, and payment schedules
+- **Graduated Rent Forecasting Engine**: Automated calculation of future rent projections based on escalation language (percentage increases, CPI adjustments, fixed step-ups)
+- **Expiration Date Analytics**: Lease term analysis with renewal option identification and critical date mapping
+- Confidence scoring and validation workflows
+- Structured data output for BigQuery analytics
 
 **What We'll Demonstrate:**
-- Elimination of manual data entry
-- Immediate visibility into key terms
-- Time savings in lease abstraction
+- Specialized AI models for complex lease language
+- Automated financial forecasting and projections
+- Portfolio-wide pattern analysis and insights
 
-#### 2.1.4 Critical Date Dashboard
+#### 2.1.4 Portfolio Analytics & Forecasting Dashboard
 **What We'll Build:**
-- Calendar view of upcoming critical dates
-- List view of next 90 days of obligations
-- Visual timeline of lease expirations
-- Color-coded urgency indicators
-- Simple filters by location and date type
+- Interactive rent forecasting visualizations across all 50 properties
+- Portfolio-wide lease expiration timeline with renewal analysis
+- Exclusion clause comparison matrix across franchise locations
+- Financial projection models with graduated escalation scenarios
+- Comparative analytics: rent rates, terms, and restrictions by location
+- BigQuery-powered reporting with real-time insights
 
 **What We'll Demonstrate:**
-- Never miss another deadline
-- Proactive vs reactive lease management
-- Portfolio-wide visibility at a glance
+- Strategic lease portfolio management
+- Data-driven renewal and expansion decisions
+- Financial forecasting for franchise growth planning
 
-#### 2.1.5 Basic Notifications
+#### 2.1.5 Intelligent Alerts & Insights
 **What We'll Build:**
-- Email alerts for critical dates
-- Configurable lead times (30, 60, 90, 180 days)
-- Simple notification preferences
-- Daily digest option
-- Test notification system
+- Cloud Functions-based notification system
+- Proactive alerts for rent escalations and lease expirations
+- Portfolio anomaly detection (unusual exclusion clauses, rent terms)
+- Automated insights: "3 leases have exclusive territory conflicts"
+- Configurable notification preferences via Cloud Scheduler
+- Integration-ready for email/Slack notifications
 
 **What We'll Demonstrate:**
-- Automated reminder system
-- Customizable to business needs
-- Set-and-forget reliability
+- Proactive lease portfolio monitoring
+- AI-powered anomaly and pattern detection
+- Automated business intelligence insights
 
 ### 2.2 Out of Scope - Not in POC
 
@@ -138,83 +146,93 @@
 
 ## 3. Technical Approach
 
-### 3.1 Architecture (Simplified for POC)
-- **Frontend:** React-based web application
-- **Backend:** Node.js/Python API server
-- **Database:** PostgreSQL for structured data
-- **Storage:** AWS S3 or Google Cloud Storage
-- **AI/Search:** OpenAI API for natural language processing
-- **PDF Processing:** Apache PDFBox or similar
-- **Hosting:** Single cloud instance (AWS/GCP/Azure)
+### 3.1 Google Cloud Architecture (Capgemini Innovation Lab Sandbox)
+- **Project Environment:** Dedicated GCP project within Capgemini Innovation Lab
+- **Document Storage:** Google Cloud Storage bucket with 50 franchise lease PDFs
+- **Document Processing:** Document AI for OCR and text extraction
+- **AI/ML Platform:** Vertex AI for custom extraction models and embeddings
+- **Data Warehouse:** BigQuery dataset for structured lease data and analytics
+- **Search & Conversation:** Vertex AI Search with vector embeddings
+- **Compute:** Cloud Functions for processing orchestration
+- **Frontend:** Cloud Run container with React application for demonstrations
+- **Security:** IAM roles and sandbox isolation for customer data protection
+- **Monitoring:** Cloud Logging and Monitoring for POC performance tracking
 
 ### 3.2 Key Technologies to Validate
-- PDF text extraction accuracy
-- AI comprehension of lease language
-- Search performance with 50+ documents
-- Date parsing reliability
-- User interface responsiveness
+- **Hybrid PDF Processing**: Document AI OCR for both traditional text-based PDFs and image-scanned lease documents
+- **Mixed Content Extraction**: Handling varying quality from clean text to scanned image pages
+- Vertex AI custom models for 5-element extraction across different PDF formats
+- Vector embedding quality for conversational search on mixed text sources
+- Rent forecasting algorithm accuracy with graduated escalations from both text and OCR sources
+- BigQuery performance for portfolio analytics queries
+- End-to-end processing latency for 50-document corpus with mixed PDF types
 
 ---
 
 ## 4. POC Deliverables
 
-### 4.1 Working Prototype
-- Web-based application accessible via browser
-- Populated with client's actual lease documents (anonymized if needed)
-- Live demonstration environment
-- Basic user documentation
+### 4.1 Working Prototype (Innovation Lab Deployment)
+- **Sandbox Environment:** Secure GCP project within Capgemini Innovation Lab
+- **Web Application:** Cloud Run deployment accessible via browser for live demonstrations
+- **Data Security:** Customer lease documents processed in isolated sandbox environment
+- **Demo Dataset:** 50 franchise lease documents (anonymized/sanitized for demonstration)
+- **Access Control:** Restricted access for POC stakeholders and demonstration purposes
+- **Documentation:** Technical architecture guide and user demonstration scripts
 
 ### 4.2 Demonstrations
-- **Demo 1: Document Upload & Organization**
-  - Upload a new lease
-  - Automatic data extraction
-  - View extracted information
-  - Time: 5 minutes
+- **Demo 1: Hybrid PDF Processing**
+  - Upload text-based and scanned image lease PDFs
+  - Document AI OCR processing showcase
+  - 5-element data extraction from mixed formats
+  - Time: 7 minutes
 
-- **Demo 2: Intelligent Search**
-  - Natural language queries
-  - Complex multi-criteria searches
-  - Instant results across all documents
+- **Demo 2: Conversational Lease Analysis**
+  - Natural language portfolio queries across 50 leases
+  - "Show me all territorial exclusions" conversations
+  - Cross-document pattern recognition and insights
   - Time: 10 minutes
 
-- **Demo 3: Critical Date Management**
-  - Dashboard overview
-  - Upcoming obligations
-  - Setting up notifications
-  - Time: 5 minutes
+- **Demo 3: Rent Forecasting & Portfolio Analytics**
+  - Graduated rent projection calculations
+  - Portfolio comparison and analytics dashboard
+  - Financial forecasting with escalation scenarios
+  - Time: 8 minutes
 
 ### 4.3 Analysis & Reports
-- Performance metrics report
-- Accuracy assessment of extractions
-- Time savings calculation
-- User feedback summary
-- Technical feasibility assessment
-- Full implementation roadmap
-- ROI projection based on POC results
+- **Document Processing Performance**: OCR accuracy rates for text vs. scanned PDFs in sandbox environment
+- **5-Element Extraction Analysis**: Precision metrics for exclusion language, dates, rent rates, forecasting, and terms
+- **Conversational Search Effectiveness**: Query response accuracy and relevance scoring
+- **Portfolio Analytics Validation**: Forecasting model accuracy and comparative insights
+- **Innovation Lab Infrastructure Assessment**: GCP service utilization and performance metrics
+- **Security & Compliance Report**: Data handling and sandbox isolation validation
+- **Production Deployment Roadmap**: Migration path from Innovation Lab to enterprise environment
+- **Cost Analysis**: Sandbox resource consumption and enterprise scalability projections
+- **ROI Assessment**: Demonstrated time savings and business value quantification
 
 ---
 
 ## 5. User Scenarios for POC
 
-### 5.1 Scenario 1: New Lease Onboarding
-**Current Process:** 2-4 hours of manual data entry
-**POC Demo:** 2 minutes automated extraction
-- User uploads lease PDF
-- System extracts all key data points
-- User reviews and confirms
-- All dates added to calendar automatically
+### 5.1 Scenario 1: Portfolio-Wide Exclusion Analysis
+**Current Process:** Days of manual review across 50 lease files
+**POC Demo:** Minutes with conversational analysis
+- User asks: "Show me all territorial exclusion clauses across our franchise locations"
+- System analyzes all 50 leases and returns categorized exclusions
+- Comparative analysis highlights conflicting or unusual restrictions
+- Visual map showing territorial conflicts and opportunities
 
-### 5.2 Scenario 2: Renewal Decision Research
-**Current Process:** 1-2 hours searching through files
-**POC Demo:** 30 seconds with AI search
-- User asks: "Which leases expire in Q2 2026 with renewal options?"
-- System returns filtered list instantly
-- User clicks through to see specific terms
-- Decision data assembled in seconds
+### 5.2 Scenario 2: Rent Forecasting for Budget Planning
+**Current Process:** Manual spreadsheet calculations taking 8-16 hours
+**POC Demo:** Instant automated forecasting
+- System processes graduated rent escalations from all 50 leases
+- Generates 5-year rent projection across entire portfolio
+- Identifies locations with unusual escalation terms
+- Provides budget planning insights for franchise growth
 
-### 5.3 Scenario 3: CAM Audit Preparation
-**Current Process:** 8-16 hours gathering documents
-**POC Demo:** 5 minutes to compile all CAM data
-- User searches: "Show all CAM reconciliation clauses"
-- System displays all relevant sections
-- User exports
+### 5.3 Scenario 3: Lease Expiration & Renewal Strategy
+**Current Process:** 4-6 hours gathering expiration data
+**POC Demo:** Conversational renewal analysis
+- User asks: "Which leases expire in 2026 and have favorable renewal terms?"
+- System provides instant analysis with renewal option details
+- Cross-references rent rates and exclusion clauses for strategic decisions
+- Generates renewal prioritization recommendations

@@ -17,6 +17,11 @@ click = "^8.1.7"
 pydantic = "^2.5.0"
 rich = "^13.7.0"
 python-dotenv = "^1.0.0"  # For environment variable loading
+google-api-python-client = "^2.100.0"  # Google Drive and Docs API
+google-auth = "^2.23.0"  # Google OAuth2 authentication
+google-auth-oauthlib = "^1.1.0"  # OAuth2 flow for installed applications
+google-auth-httplib2 = "^0.1.1"  # HTTP library for Google Auth
+docxtpl = "^0.16.7"  # DOCX template processing preserving formatting
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.4.3"
