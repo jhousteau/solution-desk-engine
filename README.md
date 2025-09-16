@@ -6,19 +6,27 @@ Transform complex technical sales processes into structured, repeatable methodol
 
 ## Overview
 
-Solution Desk Engine implements a streamlined **3-phase methodology** for technical sales solutioning:
+Solution Desk Engine implements a comprehensive **11-phase methodology** for technical sales solutioning:
 
-1. **Analyze** - Requirements analysis, market research, and stakeholder mapping
-2. **Design** - Architecture design, business case development, and solution specification
-3. **Package** - Proposal creation, cost breakdown, and client presentation materials
+**Foundation Phase**: Project setup and requirements gathering
+**Analysis Phase**: Deep dive into technical and business requirements
+**Design Phase**: Solution architecture and technical design
+**Validation Phase**: Proof of concept and technical validation
+**Costing Phase**: Financial modeling and pricing analysis
+**Proposal Phase**: Comprehensive proposal development
+**Presentation Phase**: Executive and technical presentations
+**Negotiation Phase**: Contract and commercial discussions
+**Implementation Phase**: Solution deployment planning
+**Delivery Phase**: Project execution and delivery
+**Closure Phase**: Project wrap-up and lessons learned
 
 Built on proven Genesis framework utilities for enterprise-grade reliability and maintainability.
 
 ## Core Features
 
 ### 📋 Methodology Framework
-- **3-Phase Process**: Analyze → Design → Package workflow
-- **14 Document Templates**: Comprehensive templates for all deliverables
+- **11-Phase Process**: Comprehensive foundation to closure workflow
+- **Agent Orchestration**: 26 specialized agents with dynamic team formation
 - **Progress Tracking**: Real-time completion monitoring with phase status
 - **Quality Validation**: Automated document quality scoring and citation enforcement
 
@@ -87,17 +95,27 @@ solution-desk-engine status
 
 <!-- auto-generated-start -->
 ```bash
+# Show help
 solution-desk-engine --help
+
+# Show framework status and version
+solution-desk-engine status
+
+# SOW generation commands
+solution-desk-engine sow generate           # Generate SOW from Google Docs template
+solution-desk-engine sow validate-template  # Validate Google Docs template
 ```
 
-**Available Commands:**
+**Core Commands:**
 - `status` - Show framework status and version information
+- `sow generate` - Generate SOW document from Google Docs template
+- `sow validate-template` - Validate Google Docs template for SOW generation
 
-**Technical Sales Framework:**
+**Framework Features:**
 - 11-Phase methodology for cloud consulting engagements
+- Google Drive integration for document generation
+- SOW generator with template validation
 - Comprehensive agent orchestration system with 26 specialized agents
-- Dynamic team formation for optimal task execution
-- Document generation and quality validation systems
 <!-- auto-generated-end -->
 
 ## API Reference

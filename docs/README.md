@@ -6,8 +6,9 @@ This directory contains all documentation for the Solution Desk Engine technical
 
 <!-- auto-generated-start -->
 ```
-docs
+docs/
 ├── api/                        # API reference documentation
+│   └── README.md              # Complete API reference
 ├── architecture/              # Architecture decisions and design
 ├── design/                    # Technical design documents
 │   ├── Intelligent-Document-Selection-System.md
@@ -31,7 +32,13 @@ docs
 │   ├── gcp_consumption_analysis.md
 │   └── market_financial_analysis.md
 ├── working/                   # Active project work
-└── README.md                  # This file
+├── AI_SAFETY.md              # AI safety guidelines
+├── CLI_REFERENCE.md          # Command line interface reference
+├── PACKAGING.md              # Package distribution guide
+├── TROUBLESHOOTING.md        # Common issues and solutions
+├── VERSION_MANAGEMENT.md     # Version control and release management
+├── WORKTREE_GUIDE.md         # Git worktree workflow guide
+└── README.md                 # This file
 ```
 <!-- auto-generated-end -->
 
@@ -41,6 +48,7 @@ docs
 - [11-Phase Methodology](framework/11-phase-methodology.md) - Complete technical sales framework
 - [Agent Orchestration Architecture](guides/agent-orchestration-architecture.md) - Dynamic team formation system
 - [Opportunity Setup Guide](guides/1-opportunity-setup.md) - Project initialization process
+- [API Reference](api/README.md) - Complete API documentation
 
 ### Agent Library (26 Specialists)
 - [Agent Creation Best Practices](guides/agent-creation-best-practices.md) - Design guidelines
@@ -51,6 +59,14 @@ docs
 - [GCP Cost Analysis Template](templates/gcp_consumption_analysis.md) - Advanced GCP pricing model
 - [Market Analysis Template](templates/market_financial_analysis.md) - Financial projections framework
 - [Intelligent Document Selection](design/Intelligent-Document-Selection-System.md) - Document management system
+
+### Reference Guides
+- [CLI Reference](CLI_REFERENCE.md) - Command line interface documentation
+- [Troubleshooting](TROUBLESHOOTING.md) - Common issues and solutions
+- [Version Management](VERSION_MANAGEMENT.md) - Release and versioning guide
+- [Worktree Guide](WORKTREE_GUIDE.md) - Git workflow with worktrees
+- [Packaging](PACKAGING.md) - Distribution and deployment guide
+- [AI Safety](AI_SAFETY.md) - AI development guidelines
 
 ## Framework Status
 
