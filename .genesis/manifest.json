@@ -9,10 +9,10 @@
   },
   "sync_categories": {
     "always_sync": [
-      "scripts/validate-bootstrap.sh",
       ".genesis/scripts/",
-      "scripts/check-file-organization.sh",
-      ".claude/"
+      "scripts/validate-bootstrap.sh",
+      ".claude/",
+      "scripts/check-file-organization.sh"
     ],
     "if_unchanged": [
       "Makefile",
@@ -20,11 +20,11 @@
       ".pre-commit-config.yaml"
     ],
     "never_sync": [
-      "CLAUDE.md",
-      "README.md",
-      "package.json",
       ".envrc",
-      "pyproject.toml"
+      "README.md",
+      "CLAUDE.md",
+      "pyproject.toml",
+      "package.json"
     ]
   }
 }

@@ -1,282 +1,162 @@
 ---
 name: update-docs
-description: Update project documentation - extracts current state from code, updates READMEs, syncs command references, and maintains consistency
+description: Update project documentation - optionally scoped to a specific issue
+argument-hint: [issue-number]
 ---
 
 <role>
-You are the documentation maintenance coordinator. Your responsibility: keep documentation files synchronized with the actual codebase while preserving manually written content.
+You are a documentation maintainer responsible for keeping project documentation accurate and up-to-date.
 </role>
 
 <purpose>
-This command automatically updates documentation from source code while preserving manual content. It analyzes your project structure and updates documentation based on common patterns.
+Ensure all documentation accurately reflects the current codebase, APIs, configurations, and features.
+If an issue number is provided, focus documentation updates on changes related to that issue.
 </purpose>
-
-<scope>
-## Documentation Files to Discover and Update
-
-The command will automatically discover and update documentation based on your project structure:
-
-### **Component READMEs**
-- Look for `README.md` files in subdirectories (src/, lib/, components/, modules/, etc.)
-- Update with current command lists, API references, and usage examples
-
-### **Main Documentation**
-- `README.md` - Project overview and installation instructions
-- `docs/README.md` - Documentation index (if exists)
-- API documentation files in docs/ directory
-
-### **Specialized Documentation**
-- Script catalogs (`scripts/README.md`)
-- Template documentation (`templates/README.md`)
-- Configuration guides
-- Architecture documentation (`docs/architecture/`)
-- User guides (`docs/guides/`)
-
-### **Protected Files (Never Auto-Update)**
-- `CLAUDE.md` - AI context (manual only)
-- `SECURITY.md` - Security policy (manual only)
-- `LICENSE` - License file (manual only)
-- Any files marked with `<!-- MANUAL-ONLY -->` comment
-</scope>
 
 <procedure>
 
-## 1. **Scan Project Structure**
+## 1. Scope Determination
+
+If an issue number is provided:
 ```bash
-echo "📚 Scanning project documentation structure..."
-
-# Find all markdown files (excluding common ignore patterns)
-DOCS=$(find . -name "*.md" -type f \
-  | grep -v ".venv\|venv\|node_modules\|.git\|.claude\|scratch\|__pycache__\|.next\|dist\|build" \
-  | sort)
-
-echo "Found $(echo "$DOCS" | wc -l) documentation files"
-
-# Identify project type
-PROJECT_TYPE="unknown"
-[[ -f "package.json" ]] && PROJECT_TYPE="javascript"
-[[ -f "pyproject.toml" || -f "setup.py" ]] && PROJECT_TYPE="python"
-[[ -f "Cargo.toml" ]] && PROJECT_TYPE="rust"
-[[ -f "go.mod" ]] && PROJECT_TYPE="go"
-[[ -f "pom.xml" ]] && PROJECT_TYPE="java"
-
-echo "Detected project type: $PROJECT_TYPE"
+# Get issue details and related changes
+gh issue view $1 --json title,body,labels
+# Find recent commits related to this issue
+git log --oneline --grep="#$1" --since="30 days ago"
 ```
+Focus documentation updates on areas affected by this issue.
 
-## 2. **Update Component READMEs**
-For each directory with a README.md:
+If no issue number provided, perform comprehensive documentation review.
 
-```python
-import os
-import subprocess
-from pathlib import Path
+## 2. Documentation Inventory
 
-def update_component_readme(component_path):
-    """Update README.md for a component directory."""
-    readme_path = component_path / "README.md"
-
-    if not readme_path.exists():
-        return
-
-    print(f"📝 Updating {readme_path}")
-
-    # Extract information based on project type
-    commands = []
-    api_docs = []
-    scripts = []
-
-    # For Python projects
-    if any(Path(component_path).glob("*.py")):
-        api_docs = extract_python_docstrings(component_path)
-        commands = extract_cli_commands(component_path)
-
-    # For JavaScript/TypeScript projects
-    if any(Path(component_path).glob("*.js")) or any(Path(component_path).glob("*.ts")):
-        api_docs = extract_js_exports(component_path)
-
-    # For executable scripts
-    scripts = list_executable_scripts(component_path)
-
-    # Update README sections
-    update_readme_section(readme_path, "## Commands", commands)
-    update_readme_section(readme_path, "## API Reference", api_docs)
-    update_readme_section(readme_path, "## Scripts", scripts)
-
-# Process all component directories
-for component_dir in find_component_directories():
-    update_component_readme(Path(component_dir))
-```
-
-## 3. **Update Main README.md**
-```python
-# Extract project information
-project_name = get_project_name()  # From package.json, pyproject.toml, etc.
-version = get_project_version()
-description = get_project_description()
-
-# Update main README sections
-update_readme_section("README.md", "## Installation", generate_install_instructions())
-update_readme_section("README.md", "## Usage", extract_main_usage_examples())
-update_readme_section("README.md", "## Commands", extract_cli_help())
-update_readme_section("README.md", "## Components", list_project_components())
-
-print(f"✅ Updated main README.md for {project_name} v{version}")
-```
-
-## 4. **Update Script Catalogs**
+Identify all documentation files:
 ```bash
-if [[ -d "scripts" ]]; then
-    echo "📜 Updating script documentation..."
+# Find all markdown documentation
+find . -name "*.md" -type f | grep -E "(README|DOCS?|docs?|GUIDE|ARCHITECTURE|API)" | sort
 
-    # Generate script list with descriptions
-    (
-        echo "# Scripts"
-        echo ""
-        echo "Available scripts in this project:"
-        echo ""
+# Check for other documentation formats
+find . -name "*.rst" -o -name "*.txt" | grep -iE "readme|install|guide"
 
-        for script in scripts/*; do
-            if [[ -x "$script" ]]; then
-                name=$(basename "$script")
-                # Try to get help text or description
-                help_text=$("$script" --help 2>/dev/null | head -n 1 ||
-                           grep -m 1 "^# " "$script" 2>/dev/null | sed 's/^# //' ||
-                           echo "Script: $name")
-                echo "- **$name**: $help_text"
-            fi
-        done
-    ) > /tmp/script-catalog.md
-
-    update_readme_section "scripts/README.md" "## Available Scripts" "/tmp/script-catalog.md"
-fi
+# Look for inline documentation
+grep -r "TODO.*doc" . --focus="*.py" --focus="*.js" --focus="*.ts" 2>/dev/null | head -20
 ```
 
-## 5. **Update API Documentation**
-```python
-def update_api_docs():
-    """Update API documentation based on project type."""
+## 3. Code-Documentation Alignment
 
-    # For Python projects - extract from docstrings
-    if project_type == "python":
-        modules = find_python_modules()
-        for module in modules:
-            api_doc = extract_python_api(module)
-            if api_doc:
-                doc_path = f"docs/api/{module.stem}.md"
-                write_api_documentation(doc_path, api_doc)
+### API Documentation
+- Review all public APIs and ensure they're documented
+- Update parameter descriptions and return types
+- Add examples for complex functionality
+- Verify all endpoints/methods are covered
 
-    # For JavaScript/TypeScript - extract from JSDoc comments
-    elif project_type == "javascript":
-        update_js_api_docs()
+### Configuration Documentation
+- Check all environment variables are documented
+- Update default values and required settings
+- Document any new configuration files
+- Ensure examples match current schema
 
-    # For other languages - look for documented interfaces
-    else:
-        scan_for_documented_interfaces()
+### README Updates
+- Verify installation instructions work
+- Update dependency versions
+- Check all commands and examples run correctly
+- Ensure badges and links are valid
 
-update_api_docs()
-print("✅ API documentation updated")
-```
+### Architecture Documentation
+- Update component diagrams if structure changed
+- Document new modules or services
+- Update data flow descriptions
+- Check technology stack listing
 
-## 6. **Update Configuration Documentation**
-```python
-# Look for configuration files and update their documentation
-config_files = find_config_files()  # .env.example, config.yml, etc.
+## 4. Specific Areas to Check
 
-for config_file in config_files:
-    if should_document_config(config_file):
-        doc_path = f"docs/configuration/{Path(config_file).stem}.md"
-        generate_config_documentation(config_file, doc_path)
-
-print(f"✅ Updated documentation for {len(config_files)} configuration files")
-```
-
-## 7. **Verify Documentation Links**
+### Code Changes vs Documentation
 ```bash
-echo "🔗 Checking documentation links..."
+# Find recently modified code files
+git diff --name-only HEAD~10 | grep -E "\.(py|js|ts|go|rs)$"
 
-# Find all markdown files and check internal links
-find . -name "*.md" -type f | while read -r file; do
-    # Extract relative links and check if files exist
-    grep -o '\](\.\/[^)]*\.md)' "$file" 2>/dev/null | while read -r link; do
-        target=$(echo "$link" | sed 's/](.\/\(.*\))/\1/')
-        if [[ ! -f "$(dirname "$file")/$target" ]]; then
-            echo "⚠️  Broken link in $file: $target"
-        fi
-    done
+# Check if corresponding docs exist
+for file in $(git diff --name-only HEAD~10); do
+    base=$(basename $file | cut -d. -f1)
+    find docs -name "*${base}*" -type f 2>/dev/null
 done
 ```
 
-## 8. **Generate Documentation Index**
-```python
-def generate_doc_index():
-    """Generate a comprehensive documentation index."""
+### Version Information
+- Update version numbers in documentation
+- Check changelog is current
+- Update migration guides if needed
 
-    all_docs = find_all_markdown_files()
+### Dependencies
+- Verify requirements.txt/package.json match docs
+- Update compatibility matrices
+- Document any breaking changes
 
-    # Group by category
-    categories = {
-        "Getting Started": [],
-        "API Reference": [],
-        "Guides": [],
-        "Configuration": [],
-        "Components": [],
-        "Architecture": []
-    }
+### Examples and Tutorials
+- Test all code examples still work
+- Update screenshots if UI changed
+- Verify tutorial steps are accurate
 
-    for doc in all_docs:
-        category = categorize_documentation(doc)
-        if category in categories:
-            categories[category].append(doc)
+## 5. Documentation Quality Checks
 
-    # Generate index
-    index_content = generate_index_markdown(categories)
-
-    # Write to docs/README.md or create index
-    if Path("docs").exists():
-        write_file("docs/README.md", index_content)
-    else:
-        append_to_main_readme("## Documentation Index", index_content)
-
-generate_doc_index()
-print("✅ Documentation index generated")
+### Link Validation
+```bash
+# Find all markdown links and check they exist
+grep -h "\[.*\](.*)" *.md | grep -oE "\([^)]+\)" | tr -d "()" | while read link; do
+    if [[ $link == http* ]]; then
+        echo "External: $link"
+    elif [[ -f $link ]]; then
+        echo "✓ Valid: $link"
+    else
+        echo "✗ Broken: $link"
+    fi
+done
 ```
 
-</procedure>
+### Consistency Checks
+- Ensure consistent terminology throughout
+- Verify command syntax is uniform
+- Check code style in examples matches project standards
+- Validate markdown formatting
 
-<approach>
-## Documentation Update Strategy
+## 6. Auto-Generation Where Applicable
 
-1. **Preserve Manual Content**: Never overwrite manually written sections unless they're clearly marked as auto-generated
-2. **Extract from Source**: Pull current information directly from code, configs, and help text
-3. **Follow Conventions**: Use consistent formatting and section structure across all docs
-4. **Validate Links**: Ensure all internal links work and external links are accessible
-5. **Version Awareness**: Update version references consistently across all documentation
+### Generate API Documentation
+```python
+# For Python projects with docstrings
+# Run appropriate doc generator (sphinx, mkdocs, etc.)
+```
 
-## Protected Patterns
-- Files with `<!-- MANUAL-ONLY -->` comment
-- Sections between `<!-- MANUAL START -->` and `<!-- MANUAL END -->`
-- CLAUDE.md, SECURITY.md, LICENSE files
-- Any file marked as protected in project settings
-</approach>
+### Update Schema Documentation
+```bash
+# For projects with schemas
+# Generate documentation from schema files
+```
 
-<examples>
-## Example Usage Patterns
+## 7. Create Update Summary
 
-### For a Python CLI Project:
-- Updates `README.md` with current CLI commands from `--help`
-- Extracts API docs from docstrings in `src/` directory
-- Updates component READMEs in subdirectories
-- Catalogs scripts in `scripts/` directory
+Document what was updated:
+- List all files modified
+- Summarize major changes
+- Note any documentation gaps found
+- Flag items needing expert review
 
-### For a JavaScript Library:
-- Extracts API from exported functions and JSDoc
-- Updates usage examples from test files
-- Documents configuration options
-- Updates build and deployment instructions
+## Key Principles
 
-### For a Multi-Component Project:
-- Discovers all components with README.md files
-- Updates each component's documentation independently
-- Maintains consistent structure across components
-- Links components in main documentation index
-</examples>
+1. **Accuracy First**: Documentation must match actual behavior
+2. **Completeness**: Cover all public interfaces and key features
+3. **Clarity**: Use clear, concise language with examples
+4. **Maintenance**: Flag or remove outdated information
+5. **Accessibility**: Ensure docs are easy to find and navigate
+
+## Focus Areas by Issue Type
+
+If issue number provided, prioritize based on issue type:
+
+- **Feature Issues**: Document new functionality, update examples
+- **Bug Issues**: Update any incorrect documentation, add clarifications
+- **Performance Issues**: Document optimizations, best practices
+- **Security Issues**: Update security guidelines, configuration docs
+- **Refactoring Issues**: Update architecture docs, API changes
+
+Remember: Good documentation reduces support burden and accelerates development. Keep it current, clear, and comprehensive.

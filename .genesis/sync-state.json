@@ -1,7 +1,28 @@
 {
-  "last_sync": "2025-09-16T17:21:59.918132+00:00",
-  "template_version": "v0.13.0",
+  "last_sync": "2025-09-13T12:42:04.740600+00:00",
+  "template_version": "v0.12.0",
+  "migrated_to_genesis_structure": true,
   "files": {
+    "Dockerfile": {
+      "template_hash": "b871b3fe09587721479eb1902442eac7165078c91f8df99dd889f9400c03efbb",
+      "local_hash": "6184784215e1f8510fb2ea392ffb5d592692cae21d20786bf0bfa587ae0e00a2",
+      "modified": false
+    },
+    "docker-compose.yml": {
+      "template_hash": "26663664ee9d4fba367ebb732372e18b30b3bc89987d9744cd066d48a97bb076",
+      "local_hash": "983ede7d880796f3b431afc1913483317fb38625e915dfcccfdeea96eb7eaa1c",
+      "modified": false
+    },
+    ".claude/settings.json": {
+      "template_hash": "8870cd1df8ada22832d46c9c16c719752d97dc9c45ee8d3f94e57d8020e91e68",
+      "local_hash": "8870cd1df8ada22832d46c9c16c719752d97dc9c45ee8d3f94e57d8020e91e68",
+      "modified": false
+    },
+    "scripts/setup.sh": {
+      "template_hash": "111b0c4e9fa7ea5fecfa063c2ecdf95a02bb9343bffd751cb67856cfd0bf1e67",
+      "local_hash": "e8271543005e2e9e7fa840e02f23c26027e601a3c07cd516e5c65a14342e48e5",
+      "modified": false
+    },
     ".claude/hooks/validate-bash-command.sh": {
       "template_hash": "0598f4ef8b10427b7e08244e8ba5dab42434aa404d7252036607b5012b7c9943",
       "local_hash": "0598f4ef8b10427b7e08244e8ba5dab42434aa404d7252036607b5012b7c9943",
@@ -17,79 +38,14 @@
       "local_hash": "36f89ee5e33836b23db9efef9cc4603f6ea3f3f6a6eec655bd604e14f063d2ec",
       "modified": false
     },
-    ".claude/commands/execute-issue.md": {
-      "template_hash": "ad6e80b4adca721e56464d1f29a17e4d99ff3c332d5548ac8a0d98c4c8e09c9b",
-      "local_hash": "ad6e80b4adca721e56464d1f29a17e4d99ff3c332d5548ac8a0d98c4c8e09c9b",
-      "modified": false
-    },
-    "scripts/setup.sh": {
-      "template_hash": "d5fc4f5848e5ea05274238ea93e745e3d441d60d2077a81ff0efad7dda309959",
-      "local_hash": "280b6a7c1bc909aaa2f8dab7026cbd925b3d4a0290d0744b85c0929873007d9d",
-      "modified": false
-    },
-    "scripts/validate-bootstrap.sh": {
-      "template_hash": "2ba21ed2d3d3579df5799c7420509098e57182c1adbcc14eeeadb7a02c58d2f3",
-      "local_hash": "2ba21ed2d3d3579df5799c7420509098e57182c1adbcc14eeeadb7a02c58d2f3",
-      "modified": false
-    },
-    "scripts/check-file-organization.sh": {
-      "template_hash": "7f778e0cb795b52fec4509df78ebf5ada8be48fcf345668806de1603f6c5c128",
-      "local_hash": "7f778e0cb795b52fec4509df78ebf5ada8be48fcf345668806de1603f6c5c128",
-      "modified": false
-    },
-    ".claude/agents/verify-agent.md": {
-      "template_hash": "3b28aaf0737c33275bc2a93d167059610df2b82e4420328f759384ec2b869b3b",
-      "local_hash": "3b28aaf0737c33275bc2a93d167059610df2b82e4420328f759384ec2b869b3b",
-      "modified": false
-    },
-    ".claude/agents/outline-agent.md": {
-      "template_hash": "66f20d88e16ea094a32b75688877e7a197dfa04973d046d8fff1699644d4a04e",
-      "local_hash": "66f20d88e16ea094a32b75688877e7a197dfa04973d046d8fff1699644d4a04e",
-      "modified": false
-    },
-    ".claude/agents/enhance-agent.md": {
-      "template_hash": "e1aee0a0ff8ef4251d03546d390207ea7e810bcc78866c033108d42b15b532fa",
-      "local_hash": "e1aee0a0ff8ef4251d03546d390207ea7e810bcc78866c033108d42b15b532fa",
-      "modified": false
-    },
-    ".claude/agents/python-expert-coder.md": {
-      "template_hash": "d96b2d20e2a9934983c03dab472a46d2dd57f5693f6ad35d42efdacfe487b754",
-      "local_hash": "d96b2d20e2a9934983c03dab472a46d2dd57f5693f6ad35d42efdacfe487b754",
-      "modified": false
-    },
-    ".claude/agents/logic-agent.md": {
-      "template_hash": "e480306fcdf35d1d238365231046fbb1d2b7d7f25feb7e0b61b3a730547a66a6",
-      "local_hash": "e480306fcdf35d1d238365231046fbb1d2b7d7f25feb7e0b61b3a730547a66a6",
-      "modified": false
-    },
-    ".claude/agents/ai-engineer-expert.md": {
-      "template_hash": "d3a40d570e4a8572a28f880796cf280ecb648a33a380fa5489ed5a88ccabd82d",
-      "local_hash": "d3a40d570e4a8572a28f880796cf280ecb648a33a380fa5489ed5a88ccabd82d",
-      "modified": false
-    },
-    ".claude/agents/scaffold-agent.md": {
-      "template_hash": "de12207428a2acb0ccfee1cb85ec0d3b5d41bd0b2ba888807947a2c1fc493b03",
-      "local_hash": "de12207428a2acb0ccfee1cb85ec0d3b5d41bd0b2ba888807947a2c1fc493b03",
-      "modified": false
-    },
-    ".claude/commands/analyze-agent-data.md": {
-      "template_hash": "bc9ad881cfdba95422a2278425dd282afe427b165aa981dea1301f8f99d6f2b9",
-      "local_hash": "bc9ad881cfdba95422a2278425dd282afe427b165aa981dea1301f8f99d6f2b9",
+    ".claude/commands/update-docs.md": {
+      "template_hash": "0af1f8bc4bd91e3b7419d11ae30c74a59947c4ced040602ead0ced4ffdff9cfc",
+      "local_hash": "0af1f8bc4bd91e3b7419d11ae30c74a59947c4ced040602ead0ced4ffdff9cfc",
       "modified": false
     },
     ".claude/commands/pr-merged.md": {
-      "template_hash": "95eaeb43b7840810d12fa2dba1c1f3a97863338fbd8514e4bb915763be89ebe3",
-      "local_hash": "95eaeb43b7840810d12fa2dba1c1f3a97863338fbd8514e4bb915763be89ebe3",
-      "modified": false
-    },
-    ".claude/commands/audit-solution.md": {
-      "template_hash": "dc6283b9a43eaf7ae3ad6ae7384761ab0bfc34e02db48f0a9f3c702b4248f9cb",
-      "local_hash": "dc6283b9a43eaf7ae3ad6ae7384761ab0bfc34e02db48f0a9f3c702b4248f9cb",
-      "modified": false
-    },
-    ".claude/commands/update-docs.md": {
-      "template_hash": "49b1837a27b3beefb0598d03ba696c2d8146ae17e51f113407190a4c358d6106",
-      "local_hash": "49b1837a27b3beefb0598d03ba696c2d8146ae17e51f113407190a4c358d6106",
+      "template_hash": "fb982b295fdf7a953b9ae8265541250efd80c191a1327724132f35169c227d80",
+      "local_hash": "fb982b295fdf7a953b9ae8265541250efd80c191a1327724132f35169c227d80",
       "modified": false
     },
     ".claude/commands/commit.md": {
@@ -97,24 +53,34 @@
       "local_hash": "eda9a12b934751cab73448ccd99c5c9203572f7b4eeffe107a2cd201bb3966f7",
       "modified": false
     },
+    ".claude/commands/execute-issue.md": {
+      "template_hash": "ad6e80b4adca721e56464d1f29a17e4d99ff3c332d5548ac8a0d98c4c8e09c9b",
+      "local_hash": "ad6e80b4adca721e56464d1f29a17e4d99ff3c332d5548ac8a0d98c4c8e09c9b",
+      "modified": false
+    },
+    ".claude/agents/python-expert-coder.md": {
+      "template_hash": "d96b2d20e2a9934983c03dab472a46d2dd57f5693f6ad35d42efdacfe487b754",
+      "local_hash": "d96b2d20e2a9934983c03dab472a46d2dd57f5693f6ad35d42efdacfe487b754",
+      "modified": false
+    },
+    ".claude/agents/ai-engineer-expert.md": {
+      "template_hash": "d3a40d570e4a8572a28f880796cf280ecb648a33a380fa5489ed5a88ccabd82d",
+      "local_hash": "d3a40d570e4a8572a28f880796cf280ecb648a33a380fa5489ed5a88ccabd82d",
+      "modified": false
+    },
+    ".claude/commands/audit-solution.md": {
+      "template_hash": "dc6283b9a43eaf7ae3ad6ae7384761ab0bfc34e02db48f0a9f3c702b4248f9cb",
+      "local_hash": "dc6283b9a43eaf7ae3ad6ae7384761ab0bfc34e02db48f0a9f3c702b4248f9cb",
+      "modified": false
+    },
     ".gitignore": {
       "template_hash": "805175b7bfc8ad3923934dab2dbd14205b6f323d9520549b767348fd0d24bd52",
       "local_hash": "805175b7bfc8ad3923934dab2dbd14205b6f323d9520549b767348fd0d24bd52",
       "modified": false
     },
-    "Dockerfile": {
-      "template_hash": "5f37c66a7a0ff6589acdb70843dda54c46ef708b2abae85143396f798f59597b",
-      "local_hash": "83be29e375da2f73cb6396a7a6c91489d3cc13b7f1fe4868a0800a2dee7a6a6e",
-      "modified": false
-    },
-    "docker-compose.yml": {
-      "template_hash": "d9ccad03e02797f1d4e6191cd8d256015b555f25dae38e546ee3b290908990c5",
-      "local_hash": "2617cc8cfcba21f5339e479fe676cc02d6b0293e1ea3119a93ef670e51a6b3c5",
-      "modified": false
-    },
-    ".claude/settings.json": {
-      "template_hash": "3f5dad008618cef6509ddafd5d233c5471bcce3be547d16f2c153859b79c9b30",
-      "local_hash": "3f5dad008618cef6509ddafd5d233c5471bcce3be547d16f2c153859b79c9b30",
+    ".pre-commit-config.yaml": {
+      "template_hash": "24fc68e3209fb0447c8f0865aa1f28ca44e9976f634d78081c9bd6f02ca6a5f0",
+      "local_hash": "24fc68e3209fb0447c8f0865aa1f28ca44e9976f634d78081c9bd6f02ca6a5f0",
       "modified": false
     },
     ".gitattributes": {
@@ -124,7 +90,7 @@
     },
     ".gitleaks.toml": {
       "template_hash": "41cb2cea6d915d76f20a87a163038a07e5f0f2a4a22a66fcdd467f7b1eba8841",
-      "local_hash": "3402138c07aaf7b517d7b6d0e583e7201ab39267f887de72757102b2efc42166",
+      "local_hash": "4473bca844b2d23c59ae6605a073309cb707786db25ee5ff6ff01b76082f18fa",
       "modified": false
     },
     ".markdownlint.json": {
@@ -132,121 +98,15 @@
       "local_hash": "dda20f139b99108f2d9449847cc748b8fb9b513fea9c554a67d9fcdc058ccbdd",
       "modified": false
     },
-    ".mcp.json": {
-      "template_hash": "c3de4d9a90dac587a278965ebaa1aff278b1bf3b6bb828058902c968e7740e8b",
-      "local_hash": "c3de4d9a90dac587a278965ebaa1aff278b1bf3b6bb828058902c968e7740e8b",
-      "modified": false
-    },
     "scripts/container-setup.sh": {
       "template_hash": "157611dd6d7f0f0a049ccbd87e00ee22dc39ed5933031d5d7366bec9d04c7008",
-      "local_hash": "32dbfd426247547413f9905b45ce86d7e3730b4c0d4cb80f55e8d4dbbc263a31",
-      "modified": false
-    },
-    ".genesis/scripts/check-file-organization.sh": {
-      "template_hash": "6fb290f8cf68b875c6ad1114431d2999c5a076ca3260af2496f8dcb5868a0fbb",
-      "local_hash": "6fb290f8cf68b875c6ad1114431d2999c5a076ca3260af2496f8dcb5868a0fbb",
-      "modified": false
-    },
-    ".genesis/scripts/validate-bootstrap.sh": {
-      "template_hash": "690b4a9505a93e362a9bc9af7aceb3cbc37e816073eab946de3d2e9eac4b8953",
-      "local_hash": "690b4a9505a93e362a9bc9af7aceb3cbc37e816073eab946de3d2e9eac4b8953",
-      "modified": false
-    },
-    ".genesis/scripts/validate-components.sh": {
-      "template_hash": "7a40c393cfd7bfc787551366c8c7e12143b6c8e44acc76df428c03aeda2269f2",
-      "local_hash": "7a40c393cfd7bfc787551366c8c7e12143b6c8e44acc76df428c03aeda2269f2",
-      "modified": false
-    },
-    ".genesis/scripts/check-ai-signatures.sh": {
-      "template_hash": "2d4d249881a2041392477cb739a2ac27d3e293e5595eb1637e2f9336b8bc6e9b",
-      "local_hash": "2d4d249881a2041392477cb739a2ac27d3e293e5595eb1637e2f9336b8bc6e9b",
-      "modified": false
-    },
-    ".genesis/scripts/check-variable-defaults.sh": {
-      "template_hash": "82e9a8fe4dc90554c491ee3b7122f1a6f5f2e8da40f26c05da078646b8dbaeba",
-      "local_hash": "82e9a8fe4dc90554c491ee3b7122f1a6f5f2e8da40f26c05da078646b8dbaeba",
-      "modified": false
-    },
-    ".genesis/scripts/check-genesis-components.sh": {
-      "template_hash": "c093d9ee7ac7ac00968073a54983d2ae5a8780dc6548bf0e9efc54bea473500d",
-      "local_hash": "c093d9ee7ac7ac00968073a54983d2ae5a8780dc6548bf0e9efc54bea473500d",
-      "modified": false
-    },
-    ".genesis/scripts/find-hardcoded-values.sh": {
-      "template_hash": "52ec63c547d5124ce9f8e53b078d5f276c84f2fe3a7907c613d48f7dfa9ba00a",
-      "local_hash": "52ec63c547d5124ce9f8e53b078d5f276c84f2fe3a7907c613d48f7dfa9ba00a",
+      "local_hash": "88f305bdccde025f25ccc5e516648f778fd848c5baf143771154a0b552f83249",
       "modified": false
     },
     "Makefile": {
-      "template_hash": "63a94e5712d9ac6aad44852265f38d57bc7c376b70702458ed92e3c5597c2e50",
-      "local_hash": "3fde1da830d7f0f14255a3010619e10930f154bbd0d34410baf794c04738ce17",
-      "modified": false
-    },
-    ".genesis/scripts/setup-agent.sh": {
-      "template_hash": "81a515a91202743431366915aed213dec997edfa1d55e203c3cd9f10d64bc2bb",
-      "local_hash": "b5c08c8bff3198ece0889aacc6e978af4ca38c30b631dc0e0ec05d1b72385127",
-      "modified": false
-    },
-    ".genesis/scripts/audit-agent.sh": {
-      "template_hash": "2aeeb8c4439690038ff45e986d35b7a58896d1691d45550ac38e73a273957a90",
-      "local_hash": "7e7cb2398ba6e015b448796ae228c1c020e153e776eed3e1842e355fe2307a71",
-      "modified": false
-    },
-    ".genesis/agent-seccomp.json": {
-      "template_hash": "24f2679dba5825cb35d033d33c6fbf7e616b940bf52478abd86764af29eac20a",
-      "local_hash": "24f2679dba5825cb35d033d33c6fbf7e616b940bf52478abd86764af29eac20a",
-      "modified": false
-    },
-    ".pre-commit-config.yaml": {
-      "template_hash": "4943c5bcf3c5e91a5fbcb5f45e1e62a8cf1cd62e47af0e9e4f7cf0d5e7cd8f61",
-      "local_hash": "4943c5bcf3c5e91a5fbcb5f45e1e62a8cf1cd62e47af0e9e4f7cf0d5e7cd8f61",
-      "modified": false
-    },
-    ".genesis/scripts/bump-version.sh": {
-      "template_hash": "b658c759977b607d34bc0582255ca7f92946a3deede9bc24bd45f005a41319d8",
-      "local_hash": "53224d60df583c75f0526185e9741b649f8b1d5dd81baf4bfa83df5d03d8e2eb",
-      "modified": false
-    },
-    ".genesis/scripts/version.py": {
-      "template_hash": "f952e21436d21222388576c432d0ab516c6abeb2c2f155d17f7953c1c598d54f",
-      "local_hash": "ac4ca3a5b4e0ee62469a0d57dff7de0dad4846e6cd8dd8418c6307c4c0210111",
-      "modified": false
-    },
-    "docs/CLI_REFERENCE.md": {
-      "template_hash": "01838884da5c97ba260c0f5c62e369c308f22f12cf607478a9e770334d90bc61",
-      "local_hash": "708e665acfeedded08b983c188b9f4709d36bb32325e13723291fe4e5715d612",
-      "modified": false
-    },
-    "docs/WORKTREE_GUIDE.md": {
-      "template_hash": "e2a3cb8861bd9859419a3f92eb89d879313d40d058a98e27fa6c6776a8d0ecd2",
-      "local_hash": "6c82b3775f6f1f79e083507e601ec4fbd7a9b7dbf886fb8a136655193c6d9018",
-      "modified": false
-    },
-    "docs/AI_SAFETY.md": {
-      "template_hash": "263cd3c4362791d1fb07cf8c180cb34b24c88bd7e30983f0d23aaff99ab05c6e",
-      "local_hash": "5df9eb444d532308bfe8b9ec2493ca20be461c58f7b53d1666acb816b411860c",
-      "modified": false
-    },
-    "docs/TROUBLESHOOTING.md": {
-      "template_hash": "d44b72307f578edf7704427fcc5d3ab0f573e3c3270a2012a1ff274e3705a1c7",
-      "local_hash": "0f02a9a0adb5d4812f2394d827b07674d01f8cc0ca2e55d27882c3d72d15f24a",
-      "modified": false
-    },
-    "docs/VERSION_MANAGEMENT.md": {
-      "template_hash": "a49157033b43b64495e69239ae2a713ee48a93c015eb6307f08222435f796999",
-      "local_hash": "e68039145c4b555948996372a561e45ea1cd4b2e00978238a17c09ce72d8b5f9",
-      "modified": false
-    },
-    "docs/PACKAGING.md": {
-      "template_hash": "b6114d038bb68907e275a50a063fdb029e3e071371288b7af4837885ffe7b012",
-      "local_hash": "b6114d038bb68907e275a50a063fdb029e3e071371288b7af4837885ffe7b012",
-      "modified": false
-    },
-    "scripts/container-rebuild.sh": {
-      "template_hash": "b8b2a637859db10a1eb836ec6407cdf1df71ebdc26c9f89bc95e3598e33e0b4b",
-      "local_hash": "b8b2a637859db10a1eb836ec6407cdf1df71ebdc26c9f89bc95e3598e33e0b4b",
+      "template_hash": "451ee806b8a4dd09277113fbe9f64ae09147fbcacc60a7ceedd2a71437e253b7",
+      "local_hash": "451ee806b8a4dd09277113fbe9f64ae09147fbcacc60a7ceedd2a71437e253b7",
       "modified": false
     }
-  },
-  "migrated_to_genesis_structure": true
+  }
 }

@@ -1,0 +1,33 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//Users/jameshousteau/My Files/Business/Capgemini/capgemini_projects/Penske/**)",
+      "Bash(python:*)",
+      "Bash(poetry run mypy:*)",
+      "Bash(poetry run detect-secrets:*)",
+      "Bash(detect-secrets scan:*)",
+      "Bash(poetry run pytest:*)",
+      "Bash(docker container prune:*)",
+      "Bash(docker image prune:*)",
+      "Bash(solution-desk-engine:*)",
+      "Bash(docker ps:*)",
+      "Bash(docker volume prune:*)",
+      "Bash(docker network prune:*)",
+      "Read(//private/tmp/**)",
+      "Bash(docker system:*)",
+      "mcp__Ref__ref_read_url",
+      "mcp__Ref__ref_search_documentation",
+      "Bash(poetry run ruff:*)",
+      "Bash(poetry install:*)",
+      "Bash(poetry lock:*)",
+      "Bash(rm:*)",
+      "Bash(git reset:*)"
+    ],
+    "deny": [],
+    "ask": []
+  },
+  "enabledMcpjsonServers": [
+    "Ref"
+  ],
+  "enableAllProjectMcpServers": true
+}

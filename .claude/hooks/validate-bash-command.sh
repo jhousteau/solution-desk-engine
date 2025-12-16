@@ -4,11 +4,28 @@
 
 set -euo pipefail
 
+# Establish stable paths using CLAUDE_PROJECT_DIR (required for hook execution)
+# Claude Code always sets CLAUDE_PROJECT_DIR when running hooks
+if [ -n "${CLAUDE_PROJECT_DIR:-}" ]; then
+    PROJECT_ROOT="$CLAUDE_PROJECT_DIR"
+    HOOK_DIR="$CLAUDE_PROJECT_DIR/.claude/hooks"
+else
+    # Simple fallback without subshells (avoid posix_spawn issues in sandboxed environments)
+    # This path should match your actual repo location
+    PROJECT_ROOT="${PROJECT_ROOT:-/Users/source_code/genesis}"
+    HOOK_DIR="$PROJECT_ROOT/.claude/hooks"
+fi
+
+# Debug output (can be commented out in production)
+# echo "Hook executing from: $HOOK_DIR" >&2
+# echo "Project root: $PROJECT_ROOT" >&2
+
 # Read hook input from stdin
 input=$(cat)
 
 # Extract command from JSON input
-command=$(echo "$input" | python3 -c "
+# Use full path to python3 to avoid PATH issues in sandboxed environment
+command=$(echo "$input" | /usr/bin/python3 -c "
 import json, sys
 try:
     data = json.load(sys.stdin)
@@ -36,10 +53,10 @@ show_genesis_alternative() {
     local genesis_cmd="$2"
     local reason="$3"
 
-    echo -e "${RED}❌ $blocked_cmd blocked${NC}"
-    echo -e "${YELLOW}Reason: $reason${NC}"
-    echo -e "${GREEN}✅ Use instead: $genesis_cmd${NC}"
-    echo ""
+    echo -e "${RED}❌ $blocked_cmd blocked${NC}" >&2
+    echo -e "${YELLOW}Reason: $reason${NC}" >&2
+    echo -e "${GREEN}✅ Use instead: $genesis_cmd${NC}" >&2
+    echo "" >&2
 }
 
 # Function to show make alternative
@@ -48,11 +65,20 @@ show_make_alternative() {
     local make_cmd="$2"
     local reason="$3"
 
-    echo -e "${RED}❌ $blocked_cmd blocked${NC}"
-    echo -e "${YELLOW}Reason: $reason${NC}"
-    echo -e "${GREEN}✅ Use instead: $make_cmd${NC}"
-    echo ""
+    echo -e "${RED}❌ $blocked_cmd blocked${NC}" >&2
+    echo -e "${YELLOW}Reason: $reason${NC}" >&2
+    echo -e "${GREEN}✅ Use instead: $make_cmd${NC}" >&2
+    echo "" >&2
 }
+
+# Check for SKIP_TESTS environment variable bypass attempt
+if echo "$command" | grep -E "SKIP_TESTS=1" >/dev/null 2>&1; then
+    echo -e "${RED}❌ SKIP_TESTS=1 blocked${NC}" >&2
+    echo -e "${YELLOW}Reason: Tests must pass before committing. Skipping tests compromises code quality.${NC}" >&2
+    echo -e "${GREEN}✅ Fix the failing tests or use 'git stash' to save your work temporarily${NC}" >&2
+    echo "" >&2
+    exit 1
+fi
 
 # Check for blocked git operations
 if echo "$command" | grep -E "^git commit" >/dev/null 2>&1; then
@@ -60,6 +86,15 @@ if echo "$command" | grep -E "^git commit" >/dev/null 2>&1; then
         "git commit" \
         "genesis commit -m 'your message'" \
         "Direct git commits bypass quality gates and Genesis workflow"
+    exit 1
+fi
+
+if echo "$command" | grep -E "^git rm" >/dev/null 2>&1; then
+    echo -e "${RED}❌ git rm blocked${NC}" >&2
+    echo -e "${YELLOW}Reason: git rm can permanently delete files and bypass Genesis safety mechanisms${NC}" >&2
+    echo -e "${GREEN}✅ Use File System operations instead: rm <file> then git add -A${NC}" >&2
+    echo -e "${BLUE}ℹ️  Or use Edit tool to remove content, then regular file operations${NC}" >&2
+    echo "" >&2
     exit 1
 fi
 

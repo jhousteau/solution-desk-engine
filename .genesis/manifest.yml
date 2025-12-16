@@ -1,0 +1,341 @@
+shared_files:
+  - source: Dockerfile.template
+    dest: Dockerfile
+    sync: always
+    description: "Universal hardened development container"
+
+  - source: CLAUDE.md.template
+    dest: CLAUDE.md
+    sync: never
+    description: "AI assistant instructions (user customizable)"
+
+
+  - source: .genesis/scripts/setup/setup.sh.template
+    dest: .genesis/scripts/setup/setup.sh
+    sync: always
+    description: "Main development setup script"
+
+  - source: .genesis/scripts/setup/install-genesis.sh.template
+    dest: .genesis/scripts/setup/install-genesis.sh
+    sync: always
+    description: "Genesis installation script"
+
+  - source: .genesis/scripts/setup/setup-agent.sh.template
+    dest: .genesis/scripts/setup/setup-agent.sh
+    sync: always
+    description: "Agent environment setup script"
+
+  - source: .genesis/scripts/setup/install-organization-hooks.sh.template
+    dest: .genesis/scripts/setup/install-organization-hooks.sh
+    sync: always
+    description: "File organization git hooks installer"
+
+  - source: .genesis/scripts/setup/setup-git-auth.sh.template
+    dest: .genesis/scripts/setup/setup-git-auth.sh
+    sync: always
+    description: "Git authentication setup for containers"
+
+  - source: .genesis/scripts/utils/common-setup-functions.sh.template
+    dest: .genesis/scripts/utils/common-setup-functions.sh
+    sync: always
+    description: "Shared setup functions for all project types"
+
+  - source: .genesis/scripts/utils/common-check-functions.sh.template
+    dest: .genesis/scripts/utils/common-check-functions.sh
+    sync: always
+    description: "Shared check functions for maintenance scripts"
+
+  - source: .genesis/scripts/docker/docker-cleanup.sh.template
+    dest: .genesis/scripts/docker/docker-cleanup.sh
+    sync: always
+    description: "Docker cleanup utility"
+
+  - source: .genesis/scripts/docker/container-setup.sh.template
+    dest: .genesis/scripts/docker/container-setup.sh
+    sync: always
+    description: "Container setup script"
+
+  - source: .genesis/scripts/docker/container-rebuild.sh.template
+    dest: .genesis/scripts/docker/container-rebuild.sh
+    sync: always
+    description: "Container rebuild script"
+
+  - source: .genesis/scripts/utils/audit-genesis-consistency.sh.template
+    dest: .genesis/scripts/utils/audit-genesis-consistency.sh
+    sync: always
+    description: "Cross-project Genesis consistency auditing"
+
+  - source: .genesis/scripts/utils/audit-agent.sh.template
+    dest: .genesis/scripts/utils/audit-agent.sh
+    sync: always
+    description: "Security audit for agent containers"
+
+
+  - source: .genesis/scripts/validation/check-genesis-components.sh.template
+    dest: .genesis/scripts/validation/check-genesis-components.sh
+    sync: always
+    description: "Component usage validation script"
+
+  - source: .genesis/scripts/validation/validate-sync-manifest.sh.template
+    dest: .genesis/scripts/validation/validate-sync-manifest.sh
+    sync: always
+    description: "Validate project against sync manifest"
+
+  - source: .genesis/scripts/validation/check-variable-defaults.sh.template
+    dest: .genesis/scripts/validation/check-variable-defaults.sh
+    sync: always
+    description: "Variable defaults checking script"
+
+  - source: .genesis/scripts/validation/check-file-organization.sh.template
+    dest: .genesis/scripts/validation/check-file-organization.sh
+    sync: always
+    description: "File organization validation script"
+
+  - source: .genesis/scripts/validation/find-hardcoded-values.sh.template
+    dest: .genesis/scripts/validation/find-hardcoded-values.sh
+    sync: always
+    description: "Hardcoded values detection script"
+
+  - source: .genesis/scripts/validation/check-ai-signatures.sh.template
+    dest: .genesis/scripts/validation/check-ai-signatures.sh
+    sync: always
+    description: "AI signature detection script"
+
+  - source: .genesis/scripts/validation/validate-components.sh.template
+    dest: .genesis/scripts/validation/validate-components.sh
+    sync: always
+    description: "Component validation script"
+
+  - source: .genesis/scripts/validation/validate-bootstrap.sh.template
+    dest: .genesis/scripts/validation/validate-bootstrap.sh
+    sync: always
+    description: "Bootstrap validation script"
+
+  - source: .genesis/scripts/validation/audit-manifest.sh.template
+    dest: .genesis/scripts/validation/audit-manifest.sh
+    sync: always
+    description: "Comprehensive manifest audit and validation script"
+
+  - source: .genesis/hooks/post-commit
+    dest: .genesis/hooks/post-commit
+    sync: always
+    description: "Git post-commit hook for file organization checks"
+
+  - source: .genesis/hooks/post-checkout
+    dest: .genesis/hooks/post-checkout
+    sync: always
+    description: "Git post-checkout hook for environment setup"
+
+  - source: .genesis/hooks/post-merge
+    dest: .genesis/hooks/post-merge
+    sync: always
+    description: "Git post-merge hook for dependency updates"
+
+  - source: .genesis/hooks/pre-push
+    dest: .genesis/hooks/pre-push
+    sync: always
+    description: "Git pre-push hook for quality checks"
+
+  - source: Makefile.template
+    dest: Makefile
+    sync: if_unchanged
+    description: "Development automation with clean wheel file handling"
+
+  - source: .envrc.template
+    dest: .envrc
+    sync: if_unchanged
+    description: "Environment configuration"
+
+  - source: .gitignore.template
+    dest: .gitignore
+    sync: if_unchanged
+    description: "Git ignore patterns"
+
+  - source: pyproject.toml.template
+    dest: pyproject.toml
+    sync: never
+    description: "Python project configuration (user customizable)"
+
+  - source: README.md.template
+    dest: README.md
+    sync: never
+    description: "Project documentation (user customizable)"
+
+  - source: .pre-commit-config.yaml.template
+    dest: .pre-commit-config.yaml
+    sync: always
+    description: "Pre-commit hooks configuration with quality gates"
+
+  - source: .claude/settings.json.template
+    dest: .claude/settings.json
+    sync: if_unchanged
+    description: "Claude Code settings configuration"
+
+  - source: .claude/LEAN-TDD-WORKFLOW.md.template
+    dest: .claude/LEAN-TDD-WORKFLOW.md
+    sync: always
+    description: "Lean TDD workflow documentation for Claude"
+
+  - source: .claude/hooks/validate-bash-command.sh.template
+    dest: .claude/hooks/validate-bash-command.sh
+    sync: always
+    description: "Bash command validation hook"
+
+  - source: .claude/agents/bloat-detector.md
+    dest: .claude/agents/bloat-detector.md
+    sync: always
+    description: "Bloat detector agent configuration"
+
+  - source: .claude/agents/build-validator.md
+    dest: .claude/agents/build-validator.md
+    sync: always
+    description: "Build validator agent configuration"
+
+  - source: .claude/agents/complexity-auditor.md
+    dest: .claude/agents/complexity-auditor.md
+    sync: always
+    description: "Complexity auditor agent configuration"
+
+  - source: .claude/agents/dependency-tracker.md
+    dest: .claude/agents/dependency-tracker.md
+    sync: always
+    description: "Dependency tracker agent configuration"
+
+  - source: .claude/agents/documentation-minimalist.md
+    dest: .claude/agents/documentation-minimalist.md
+    sync: always
+    description: "Documentation minimalist agent configuration"
+
+  - source: .claude/agents/issue-analyst.md
+    dest: .claude/agents/issue-analyst.md
+    sync: always
+    description: "Issue analyst agent configuration"
+
+  - source: .claude/agents/lean-implementer.md
+    dest: .claude/agents/lean-implementer.md
+    sync: always
+    description: "Lean implementer agent configuration"
+
+  - source: .claude/agents/performance-monitor.md
+    dest: .claude/agents/performance-monitor.md
+    sync: always
+    description: "Performance monitor agent configuration"
+
+  - source: .claude/agents/refactoring-specialist.md
+    dest: .claude/agents/refactoring-specialist.md
+    sync: always
+    description: "Refactoring specialist agent configuration"
+
+  - source: .claude/agents/scope-guardian.md
+    dest: .claude/agents/scope-guardian.md
+    sync: always
+    description: "Scope guardian agent configuration"
+
+  - source: .claude/agents/test-designer.md
+    dest: .claude/agents/test-designer.md
+    sync: always
+    description: "Test designer agent configuration"
+
+  - source: .claude/commands/audit.md.template
+    dest: .claude/commands/audit.md
+    sync: always
+    description: "Audit command configuration"
+
+  - source: .claude/commands/bug.md.template
+    dest: .claude/commands/bug.md
+    sync: always
+    description: "Bug command configuration"
+
+  - source: .claude/commands/cleanup.md.template
+    dest: .claude/commands/cleanup.md
+    sync: always
+    description: "Cleanup command configuration"
+
+  - source: .claude/commands/close.md.template
+    dest: .claude/commands/close.md
+    sync: always
+    description: "Close command configuration"
+
+  - source: .claude/commands/commit.md.template
+    dest: .claude/commands/commit.md
+    sync: always
+    description: "Commit command configuration"
+
+  - source: .claude/commands/deprecate.md.template
+    dest: .claude/commands/deprecate.md
+    sync: always
+    description: "Deprecate command configuration"
+
+  - source: .claude/commands/feature.md.template
+    dest: .claude/commands/feature.md
+    sync: always
+    description: "Feature command configuration"
+
+  - source: .claude/commands/fix-all-errors.md.template
+    dest: .claude/commands/fix-all-errors.md
+    sync: always
+    description: "Fix all errors command configuration"
+
+  - source: .claude/commands/issue.md.template
+    dest: .claude/commands/issue.md
+    sync: always
+    description: "Issue command configuration"
+
+  - source: .claude/commands/metrics.md.template
+    dest: .claude/commands/metrics.md
+    sync: always
+    description: "Metrics command configuration"
+
+  - source: .claude/commands/optimize.md.template
+    dest: .claude/commands/optimize.md
+    sync: always
+    description: "Optimize command configuration"
+
+  - source: .claude/commands/pr.md.template
+    dest: .claude/commands/pr.md
+    sync: always
+    description: "Pull request command configuration"
+
+  - source: .claude/commands/refactor.md.template
+    dest: .claude/commands/refactor.md
+    sync: always
+    description: "Refactor command configuration"
+
+  - source: .claude/commands/research.md.template
+    dest: .claude/commands/research.md
+    sync: always
+    description: "Research command configuration"
+
+  - source: .claude/commands/tdd.md.template
+    dest: .claude/commands/tdd.md
+    sync: always
+    description: "TDD command configuration"
+
+  - source: .claude/commands/test-fix.md.template
+    dest: .claude/commands/test-fix.md
+    sync: always
+    description: "Test fix command - treats tests as source of truth"
+
+  - source: .claude/commands/update-docs.md.template
+    dest: .claude/commands/update-docs.md
+    sync: always
+    description: "Update docs command configuration"
+
+# Template variables that need to be replaced
+template_variables:
+  - name: project_name
+    description: "Project name (e.g., my-project)"
+  - name: module_name
+    description: "Python module name (snake_case version of project_name)"
+  - name: command_name
+    description: "CLI command name"
+  - name: project_type_title
+    description: "Project type title for Makefile help (e.g., 'Server', 'CLI')"
+  - name: run_dev_description
+    description: "Description for run-dev command (e.g., 'Start development server', 'Run CLI tool')"
+
+# Sync behavior configuration
+sync_config:
+  backup_changed_files: true
+  create_directories: true
+  preserve_permissions: true
